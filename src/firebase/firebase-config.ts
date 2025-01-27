@@ -1,10 +1,10 @@
 const config = {
-  apiKey: "AIzaSyBlR-A6GiRkwt698lBJmp-57wAavIfoRrk",
-  authDomain: "invitacionwl.firebaseapp.com",
-  projectId: "invitacionwl",
-  storageBucket: "invitacionwl.firebasestorage.app",
-  messagingSenderId: "165156622834",
-  appId: "1:165156622834:web:ec44526d07307831101b6b",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
 };
 
 export function getFirebaseConfig() {
