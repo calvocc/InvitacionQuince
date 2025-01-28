@@ -2,7 +2,6 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import reactLogo from ".././assets/react.svg";
 import { signInUser } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
-import ".././App.css";
 
 const defaultFormFields = {
   email: "",

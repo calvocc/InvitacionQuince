@@ -1,6 +1,9 @@
-import reactLogo from ".././assets/react.svg";
 import { useNavigate } from "react-router-dom";
-import ".././App.css";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid2";
+
+import WLButtons from "../components/ui-theme/wl-button";
 
 function Home() {
   const navigate = useNavigate();
@@ -10,16 +13,13 @@ function Home() {
   };
 
   return (
-    <div className="App">
-      <div className="card">
-        <div className="logo-react">
-          <a href="https://reactjs.org" target="_blank">
-            <img src={reactLogo} className="logo react" alt="React logo" />
-          </a>
-        </div>
-        <button onClick={signOut}>Login</button>
-      </div>
-    </div>
+    <Container maxWidth="sm">
+      <Grid container spacing={2}>
+        <Grid size={8}>
+          <WLButtons onClick={signOut} label="Sign out" icon={<DeleteIcon />} />
+        </Grid>
+      </Grid>
+    </Container>
   );
 }
 
