@@ -4,7 +4,9 @@ import { AuthContext } from "./context/auth-context";
 import RequireAuth from "./components/require-auth";
 import Home from "./routes/home";
 import Login from "./routes/login";
-import Profile from "./routes/profile";
+import Invitados from "./routes/invitados";
+import DashboardLayout from "./routes/dashboard-layout";
+import Mensajes from "./routes/mensajes";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
@@ -15,7 +17,7 @@ function App() {
 
   useEffect(() => {
     if (currentUser) {
-      navigate("/profile");
+      navigate("/dashboard");
     }
   }, [currentUser]);
 
@@ -24,15 +26,17 @@ function App() {
       <Route index element={<Home />} />
       <Route path="login" element={<Login />} />
       <Route
-        path="profile"
+        path="dashboard"
         element={
           <RequireAuth>
-            <Profile />
+            <DashboardLayout />
           </RequireAuth>
         }
-      />
+      >
+        <Route index element={<Invitados />} />
+        <Route path="mensajes" element={<Mensajes />} />
+      </Route>
     </Routes>
   );
 }
-
 export default App;

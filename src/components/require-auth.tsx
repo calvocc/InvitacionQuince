@@ -4,7 +4,7 @@ import { Navigate, useLocation } from "react-router-dom";
 
 function RequireAuth({ children }: { children: JSX.Element }) {
   const { currentUser } = useContext(AuthContext);
-  let location = useLocation();
+  const location = useLocation();
 
   if (!currentUser) {
     // Redirige al usuario a la página de inicio.
