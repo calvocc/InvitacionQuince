@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Container from "@mui/material/Container";
 import AppBar from "@mui/material/AppBar";
@@ -11,6 +11,8 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
+
+import { AuthContext } from "../context/auth-context";
 
 const StyledAppBar = styled(AppBar)({
   backgroundColor: "#686754",
@@ -29,6 +31,7 @@ const StyleButton = styled(Button)({
 const pages = ["invitados", "mensajes", "playlist"];
 function Navegacion() {
   const navigate = useNavigate();
+  const { signOut } = useContext(AuthContext);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -141,6 +144,12 @@ function Navegacion() {
                 {page}
               </StyleButton>
             ))}
+            <StyleButton
+              onClick={signOut}
+              sx={{ color: "white", display: "block" }}
+            >
+              Sign Out
+            </StyleButton>
           </Box>
         </Toolbar>
       </Container>

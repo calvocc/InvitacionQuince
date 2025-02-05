@@ -18,7 +18,6 @@ const WLButton = styled(Button)<{ colorLight?: boolean }>`
 `;
 
 type WLButtonsProps = {
-  onClick: () => void;
   label: string;
   icon?: JSX.Element;
   colorLight?: boolean;
@@ -29,7 +28,8 @@ export default function WLButtons({
   label,
   icon,
   colorLight,
-}: WLButtonsProps) {
+  ...props
+}: WLButtonsProps & React.ComponentProps<typeof Button>) {
   return (
     <WLButton
       variant="contained"
@@ -37,6 +37,7 @@ export default function WLButtons({
       startIcon={icon}
       size="medium"
       colorLight={colorLight}
+      {...props}
     >
       {label}
     </WLButton>
