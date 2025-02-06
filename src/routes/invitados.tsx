@@ -1,19 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid2";
-import TextField from "@mui/material/TextField";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import LinearProgress from "@mui/material/LinearProgress";
 import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { v4 as uuidv4 } from "uuid";
@@ -21,39 +8,22 @@ import { v4 as uuidv4 } from "uuid";
 import { AuthContext } from "../context/auth-context";
 import WLButtons from "../components/ui-theme/wl-button";
 import Tabla from "../components/tabla-invitado";
+import DialogInvitado from "../components/dialog-invitado";
 
-import { useGetColection, usePostColection } from "../hooks/useGetColection";
-
-const StyleDialogTitle = styled(DialogTitle)`
-  font-family: "Poppins", serif;
-  font-weight: 700;
-  font-size: 1.2rem;
-  padding-bottom: 5px;
-`;
-
-const StyleDialogContentText = styled(DialogContentText)`
-  font-family: "Poppins", serif;
-  font-weight: 400;
-  font-size: 0.8rem;
-`;
-
-const StyleLinearProgress = styled(LinearProgress)`
-  width: 100%;
-  .MuiLinearProgress-bar {
-    background-color: #9aa098;
-  }
-  && {
-    background-color: #686754;
-  }
-`;
+import {
+  useGetColection,
+  usePostColection,
+  usePutColection,
+  useDeleteColection,
+} from "../hooks/useGetColection";
 
 export interface Invitados {
-  number: number;
+  number?: number;
   invitado: string;
   celular: string;
   cupos: number;
   estado: string;
-  uid: string;
+  uid?: string;
 }
 
 export interface InvitadosData {
@@ -62,8 +32,8 @@ export interface InvitadosData {
   celular: string;
   cupos: number;
   estado: number;
-  uid: string;
-  invitadoPor: string;
+  uid?: string;
+  invitadoPor?: string;
 }
 
 function Invitados() {
@@ -74,12 +44,36 @@ function Invitados() {
     showSnackbar: { open: showOpenSnackbar, message, severity },
     postData,
   } = usePostColection("Invitados");
+  const {
+    loading: putLoading,
+    showSnackbar: {
+      open: showOpenPutSnackbar,
+      message: putMessage,
+      severity: putSeverity,
+    },
+    putData,
+  } = usePutColection("Invitados");
+  const {
+    showSnackbar: {
+      open: showOpendeleteSnackbar,
+      message: deleteMessage,
+      severity: deleteSeverity,
+    },
+    deleteData,
+  } = useDeleteColection("Invitados");
+
   const [open, setOpen] = useState(false);
-  const [invitado, setInvitado] = useState("");
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [invitado, setInvitado] = useState<InvitadosData>({
+    dirigida: "",
+    invitado: "",
+    celular: "",
+    cupos: 0,
+    estado: 0,
+  });
 
   const handleCloseSnackbar = (
-    event?: React.SyntheticEvent | Event,
+    _event?: React.SyntheticEvent | Event,
     reason?: SnackbarCloseReason
   ) => {
     if (reason === "clickaway") {
@@ -89,19 +83,22 @@ function Invitados() {
     setOpenSnackbar(false);
   };
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setInvitado(event.target.value);
-  };
+  useEffect(() => {
+    if (
+      !severity ||
+      severity === "success" ||
+      putSeverity === "success" ||
+      deleteSeverity === "success"
+    ) {
+      getData();
+    }
+  }, [severity, putSeverity, deleteSeverity, getData]);
 
   useEffect(() => {
-    getData();
-  }, []);
-
-  useEffect(() => {
-    if (showOpenSnackbar) {
+    if (showOpenSnackbar || showOpenPutSnackbar || showOpendeleteSnackbar) {
       setOpenSnackbar(true);
     }
-  }, [showOpenSnackbar]);
+  }, [showOpenSnackbar, showOpenPutSnackbar, showOpendeleteSnackbar]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -112,27 +109,15 @@ function Invitados() {
     setOpen(false);
   };
 
-  const mapEstado = (estado: number) => {
-    switch (estado) {
-      case 0:
-        return "Pendiente";
-      case 1:
-        return "Confirmado";
-      case 2:
-        return "Cancelado";
-      default:
-        return "No definido";
-    }
-  };
-
-  const mapData = useMemo((): Invitados[] => {
+  const mapData = useMemo((): InvitadosData[] => {
     return data.map((item, index) => {
       return {
         number: index + 1,
-        invitado: `${item.dirigida}. ${item.invitado} `,
+        dirigida: item.dirigida as string,
+        invitado: item.invitado as string,
         celular: item.celular as string,
         cupos: item.cupos as number,
-        estado: mapEstado(item.estado as number),
+        estado: item.estado as number,
         uid: item.uid as string,
       };
     });
@@ -150,23 +135,30 @@ function Invitados() {
     { id: "acciones", label: "Acciones" },
   ];
 
-  const addInvitado = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const addInvitado = (item: InvitadosData, type: string) => {
     const uuid = uuidv4();
-    const formData = new FormData(event.currentTarget);
-    const formJson = Object.fromEntries(formData.entries()) as Record<
-      string,
-      string
-    >;
 
-    postData({
-      ...formJson,
-      cupos: parseInt(formJson.cupos),
-      uid: uuid,
-      estado: 0,
-      invitadoPor: currentUser?.email ?? "No definido",
-    });
+    if (type === "post") {
+      postData({
+        ...item,
+        uid: uuid,
+        estado: 0,
+        invitadoPor: currentUser?.email ?? "No definido",
+      });
+    }
+    if (type === "put") {
+      putData({ ...item });
+    }
     handleClose("submit");
+  };
+
+  const onEdit = (invitado: InvitadosData) => {
+    setInvitado(invitado);
+    handleClickOpen();
+  };
+
+  const onDelete = (uid: string) => {
+    deleteData(uid);
   };
 
   return (
@@ -177,7 +169,9 @@ function Invitados() {
           autoHideDuration={6000}
           onClose={handleCloseSnackbar}
         >
-          <Alert severity={severity}>{message}</Alert>
+          <Alert severity={severity || putSeverity || deleteSeverity}>
+            {message || putMessage || deleteMessage}
+          </Alert>
         </Snackbar>
         <Grid
           container
@@ -200,105 +194,24 @@ function Invitados() {
         {errorData}
         <Grid container spacing={2}>
           <Grid size={12}>
-            <Tabla data={mapData} columns={columns} />
+            <Tabla
+              data={mapData}
+              columns={columns}
+              onEdit={onEdit}
+              onDelete={onDelete}
+            />
           </Grid>
         </Grid>
       </Container>
 
-      <Dialog
+      <DialogInvitado
         open={open}
-        onClose={() => handleClose("backdropClick")}
-        PaperProps={{
-          component: "form",
-          onSubmit: addInvitado,
-        }}
-      >
-        {postLoading && (
-          <Box sx={{ width: "100%" }}>
-            <StyleLinearProgress />
-          </Box>
-        )}
-        <StyleDialogTitle>Agregar invitados</StyleDialogTitle>
-        <DialogContent>
-          <StyleDialogContentText>
-            Completa los datos para agregar un nuevo invitado.
-          </StyleDialogContentText>
-          <FormControl variant="standard" fullWidth sx={{ marginTop: 4 }}>
-            <InputLabel id="demo-simple-select-standard-label">
-              Dirigida a:
-            </InputLabel>
-            <Select
-              required
-              labelId="demo-simple-select-standard-label"
-              id="dirigida"
-              name="dirigida"
-              value={invitado}
-              onChange={handleChange}
-              label="Dirigida a"
-            >
-              <MenuItem value="" disabled>
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={"Sr"}>Señor</MenuItem>
-              <MenuItem value={"Sra"}>Señora</MenuItem>
-              <MenuItem value={"Sr. y Sra"}>Señor y Señora</MenuItem>
-              <MenuItem value={"Srta"}>Señorita</MenuItem>
-              <MenuItem value={"Dr"}>Doctor</MenuItem>
-              <MenuItem value={"Dra"}>Doctora</MenuItem>
-              <MenuItem value={"Ing"}>Ingeniero</MenuItem>
-              <MenuItem value={"Lic"}>Licenciado</MenuItem>
-              <MenuItem value={"Apreciado"}>Apreciado</MenuItem>
-              <MenuItem value={"Apreciada"}>Apreciada</MenuItem>
-              <MenuItem value={"Familia"}>Familia</MenuItem>
-            </Select>
-          </FormControl>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="invidato"
-            name="invitado"
-            label="Invitado"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="celular"
-            name="celular"
-            label="Celular"
-            type="phone"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="cupos"
-            name="cupos"
-            label="Cupos"
-            type="number"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <WLButtons
-            onClick={() => handleClose("backdropClick")}
-            label="Cancel"
-            disabled={postLoading}
-          ></WLButtons>
-          <WLButtons
-            type="submit"
-            label="Agregar"
-            disabled={postLoading}
-          ></WLButtons>
-        </DialogActions>
-      </Dialog>
+        handleClose={(option) => handleClose(option)}
+        onAction={(item, type) => addInvitado(item, type)}
+        postLoading={postLoading || putLoading}
+        invitado={invitado}
+        setInvitado={setInvitado}
+      />
     </>
   );
 }

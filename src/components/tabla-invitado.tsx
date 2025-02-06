@@ -18,11 +18,13 @@ import EditIcon from "@mui/icons-material/Edit";
 
 import WLButtonGroup from "./ui-theme/wl-button-group";
 
-import { Invitados } from "../routes/invitados";
+import { InvitadosData } from "../routes/invitados";
 
 interface TablaProps {
-  data: Array<Invitados>;
+  data: Array<InvitadosData>;
   columns: Array<{ id: string; label: string }>;
+  onEdit: (user: InvitadosData) => void;
+  onDelete: (uid: string) => void;
 }
 
 const TableStyle = styled(Table)`
@@ -45,7 +47,23 @@ const TableStyle = styled(Table)`
   }
 `;
 
-const Tabla: React.FC<TablaProps> = ({ data, columns }) => {
+const Tabla: React.FC<TablaProps> = ({ data, columns, onEdit, onDelete }) => {
+  const waMessage = (user: InvitadosData) =>
+    `🎉✨ ¡Hola ${user.invitado}! ✨🎉 Tenemos el placer de invitarte a un día muy especial para nosotros: ¡nuestra boda! 💍❤️ Hemos preparado una invitación digital con todos los detalles. Haz clic aquí para verla 👉 http://localhost:5173/${user.uid}`;
+
+  const mapEstado = (estado: number) => {
+    switch (estado) {
+      case 0:
+        return "Pendiente";
+      case 1:
+        return "Confirmado";
+      case 2:
+        return "Cancelado";
+      default:
+        return "No definido";
+    }
+  };
+
   return (
     <TableContainer component={Paper}>
       <TableStyle stickyHeader aria-label="sticky table">
@@ -64,7 +82,7 @@ const Tabla: React.FC<TablaProps> = ({ data, columns }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row: Invitados, index: number) => (
+          {data.map((row: InvitadosData, index: number) => (
             <TableRow key={index}>
               {columns.map((column) => {
                 if (column.id === "acciones") {
@@ -73,17 +91,33 @@ const Tabla: React.FC<TablaProps> = ({ data, columns }) => {
                       <WLButtonGroup>
                         <>
                           <Tooltip title="Invitar por whatsapp">
-                            <IconButton size="small">
+                            <IconButton
+                              size="small"
+                              onClick={() => {
+                                window.open(
+                                  `https://wa.me/${
+                                    row.celular
+                                  }?text=${waMessage(row)}`,
+                                  "_blank"
+                                );
+                              }}
+                            >
                               <WhatsAppIcon />
                             </IconButton>
                           </Tooltip>
                           <Tooltip title="Editar invitacion">
-                            <IconButton size="small">
+                            <IconButton
+                              size="small"
+                              onClick={() => onEdit(row)}
+                            >
                               <EditIcon />
                             </IconButton>
                           </Tooltip>
                           <Tooltip title="Eliminar invitacion">
-                            <IconButton size="small">
+                            <IconButton
+                              size="small"
+                              onClick={() => onDelete(row.uid as string)}
+                            >
                               <DeleteIcon />
                             </IconButton>
                           </Tooltip>
@@ -92,9 +126,18 @@ const Tabla: React.FC<TablaProps> = ({ data, columns }) => {
                     </TableCell>
                   );
                 }
+                if (column.id === "estado") {
+                  return (
+                    <TableCell key={column.id}>
+                      {mapEstado(
+                        row[column.id as keyof InvitadosData] as number
+                      )}
+                    </TableCell>
+                  );
+                }
                 return (
                   <TableCell key={column.id}>
-                    {row[column.id as keyof Invitados]}
+                    {row[column.id as keyof InvitadosData]}
                   </TableCell>
                 );
               })}
