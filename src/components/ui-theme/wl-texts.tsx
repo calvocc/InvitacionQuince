@@ -15,9 +15,14 @@ type WLTextsProps = TypographyProps & {
   weight?: number;
 };
 
-export default function WLTexts({ children, color, ...props }: WLTextsProps) {
+export default function WLTexts({
+  children,
+  color,
+  weight,
+  ...props
+}: WLTextsProps) {
   return (
-    <WLText {...props} color={color}>
+    <WLText {...props} color={color} weight={weight}>
       {children}
     </WLText>
   );

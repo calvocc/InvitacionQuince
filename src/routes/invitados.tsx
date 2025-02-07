@@ -36,6 +36,14 @@ export interface InvitadosData {
   invitadoPor?: string;
 }
 
+const initialInvitado: InvitadosData = {
+  dirigida: "",
+  invitado: "",
+  celular: "",
+  cupos: 0,
+  estado: 0,
+};
+
 function Invitados() {
   const { currentUser } = useContext(AuthContext);
   const { data, loading, error, getData } = useGetColection("Invitados");
@@ -64,13 +72,7 @@ function Invitados() {
 
   const [open, setOpen] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [invitado, setInvitado] = useState<InvitadosData>({
-    dirigida: "",
-    invitado: "",
-    celular: "",
-    cupos: 0,
-    estado: 0,
-  });
+  const [invitado, setInvitado] = useState<InvitadosData>(initialInvitado);
 
   const handleCloseSnackbar = (
     _event?: React.SyntheticEvent | Event,
@@ -84,15 +86,8 @@ function Invitados() {
   };
 
   useEffect(() => {
-    if (
-      !severity ||
-      severity === "success" ||
-      putSeverity === "success" ||
-      deleteSeverity === "success"
-    ) {
-      getData();
-    }
-  }, [severity, putSeverity, deleteSeverity, getData]);
+    getData();
+  }, []);
 
   useEffect(() => {
     if (showOpenSnackbar || showOpenPutSnackbar || showOpendeleteSnackbar) {
@@ -123,9 +118,6 @@ function Invitados() {
     });
   }, [data]);
 
-  const loadingData = loading && <p>Loading data...</p>;
-  const errorData = error && <p>{error.message}</p>;
-
   const columns: { id: string; label: string }[] = [
     { id: "number", label: "" },
     { id: "invitado", label: "Invitado" },
@@ -135,11 +127,11 @@ function Invitados() {
     { id: "acciones", label: "Acciones" },
   ];
 
-  const addInvitado = (item: InvitadosData, type: string) => {
+  const addInvitado = async (item: InvitadosData, type: string) => {
     const uuid = uuidv4();
 
     if (type === "post") {
-      postData({
+      await postData({
         ...item,
         uid: uuid,
         estado: 0,
@@ -147,9 +139,11 @@ function Invitados() {
       });
     }
     if (type === "put") {
-      putData({ ...item });
+      await putData({ ...item });
     }
     handleClose("submit");
+    setInvitado(initialInvitado);
+    getData();
   };
 
   const onEdit = (invitado: InvitadosData) => {
@@ -157,8 +151,9 @@ function Invitados() {
     handleClickOpen();
   };
 
-  const onDelete = (uid: string) => {
-    deleteData(uid);
+  const onDelete = async (uid: string) => {
+    await deleteData(uid);
+    getData();
   };
 
   return (
@@ -190,8 +185,6 @@ function Invitados() {
             />
           </Grid>
         </Grid>
-        {loadingData}
-        {errorData}
         <Grid container spacing={2}>
           <Grid size={12}>
             <Tabla
@@ -199,6 +192,8 @@ function Invitados() {
               columns={columns}
               onEdit={onEdit}
               onDelete={onDelete}
+              loadingData={loading}
+              errorData={error?.message}
             />
           </Grid>
         </Grid>

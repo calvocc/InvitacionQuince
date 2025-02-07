@@ -7,24 +7,32 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Box,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
-
 import DeleteIcon from "@mui/icons-material/Delete";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import EditIcon from "@mui/icons-material/Edit";
+import Alert from "@mui/material/Alert";
 
 import WLButtonGroup from "./ui-theme/wl-button-group";
+import WLTexts from "./ui-theme/wl-texts";
 
 import { InvitadosData } from "../routes/invitados";
+import { MensajesData } from "../routes/mensajes";
+import { PlaylistData } from "../routes/playlist";
+
+type TablaData = InvitadosData | MensajesData | PlaylistData;
 
 interface TablaProps {
-  data: Array<InvitadosData>;
+  data: Array<TablaData>;
   columns: Array<{ id: string; label: string }>;
   onEdit: (user: InvitadosData) => void;
   onDelete: (uid: string) => void;
+  loadingData?: boolean;
+  errorData?: string;
 }
 
 const TableStyle = styled(Table)`
@@ -47,8 +55,15 @@ const TableStyle = styled(Table)`
   }
 `;
 
-const Tabla: React.FC<TablaProps> = ({ data, columns, onEdit, onDelete }) => {
-  const waMessage = (user: InvitadosData) =>
+const Tabla: React.FC<TablaProps> = ({
+  data,
+  columns,
+  onEdit,
+  onDelete,
+  loadingData,
+  errorData,
+}) => {
+  const waMessage = (user: TablaData) =>
     `🎉✨ ¡Hola ${user.invitado}! ✨🎉 Tenemos el placer de invitarte a un día muy especial para nosotros: ¡nuestra boda! 💍❤️ Hemos preparado una invitación digital con todos los detalles. Haz clic aquí para verla 👉 http://localhost:5173/${user.uid}`;
 
   const mapEstado = (estado: number) => {
@@ -63,6 +78,13 @@ const Tabla: React.FC<TablaProps> = ({ data, columns, onEdit, onDelete }) => {
         return "No definido";
     }
   };
+  if (errorData) {
+    return (
+      <Alert severity="error" sx={{ width: "100%" }}>
+        {errorData}
+      </Alert>
+    );
+  }
 
   return (
     <TableContainer component={Paper}>
@@ -82,67 +104,99 @@ const Tabla: React.FC<TablaProps> = ({ data, columns, onEdit, onDelete }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row: InvitadosData, index: number) => (
-            <TableRow key={index}>
-              {columns.map((column) => {
-                if (column.id === "acciones") {
-                  return (
-                    <TableCell key={column.id} align="right">
-                      <WLButtonGroup>
-                        <>
-                          <Tooltip title="Invitar por whatsapp">
-                            <IconButton
-                              size="small"
-                              onClick={() => {
-                                window.open(
-                                  `https://wa.me/${
-                                    row.celular
-                                  }?text=${waMessage(row)}`,
-                                  "_blank"
-                                );
-                              }}
-                            >
-                              <WhatsAppIcon />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="Editar invitacion">
-                            <IconButton
-                              size="small"
-                              onClick={() => onEdit(row)}
-                            >
-                              <EditIcon />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="Eliminar invitacion">
-                            <IconButton
-                              size="small"
-                              onClick={() => onDelete(row.uid as string)}
-                            >
-                              <DeleteIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </>
-                      </WLButtonGroup>
-                    </TableCell>
-                  );
-                }
-                if (column.id === "estado") {
-                  return (
-                    <TableCell key={column.id}>
-                      {mapEstado(
-                        row[column.id as keyof InvitadosData] as number
-                      )}
-                    </TableCell>
-                  );
-                }
-                return (
-                  <TableCell key={column.id}>
-                    {row[column.id as keyof InvitadosData]}
-                  </TableCell>
-                );
-              })}
+          {loadingData ? (
+            <TableRow>
+              <TableCell align="left" colSpan={columns.length}>
+                <Box sx={{ width: "100%" }}>
+                  <WLTexts>Cargando datos...</WLTexts>
+                </Box>
+              </TableCell>
             </TableRow>
-          ))}
+          ) : (
+            <>
+              {data.length === 0 ? (
+                <TableRow>
+                  <TableCell align="left" colSpan={columns.length}>
+                    <Alert severity="warning" sx={{ width: "100%" }}>
+                      No hay datos para mostrar
+                    </Alert>
+                  </TableCell>
+                </TableRow>
+              ) : (
+                <>
+                  {data.map((row: TablaData, index: number) => (
+                    <TableRow key={index}>
+                      {columns.map((column) => {
+                        if (column.id === "acciones") {
+                          return (
+                            <TableCell key={column.id} align="right">
+                              <WLButtonGroup>
+                                <>
+                                  <Tooltip title="Invitar por whatsapp">
+                                    <IconButton
+                                      size="small"
+                                      onClick={() => {
+                                        if ("celular" in row) {
+                                          window.open(
+                                            `https://wa.me/${
+                                              row.celular
+                                            }?text=${waMessage(row)}`,
+                                            "_blank"
+                                          );
+                                        }
+                                      }}
+                                    >
+                                      <WhatsAppIcon />
+                                    </IconButton>
+                                  </Tooltip>
+                                  <Tooltip title="Editar invitacion">
+                                    <IconButton
+                                      size="small"
+                                      onClick={() =>
+                                        onEdit(row as InvitadosData)
+                                      }
+                                    >
+                                      <EditIcon />
+                                    </IconButton>
+                                  </Tooltip>
+                                  <Tooltip title="Eliminar invitacion">
+                                    <IconButton
+                                      size="small"
+                                      onClick={() =>
+                                        onDelete(row.uid as string)
+                                      }
+                                    >
+                                      <DeleteIcon />
+                                    </IconButton>
+                                  </Tooltip>
+                                </>
+                              </WLButtonGroup>
+                            </TableCell>
+                          );
+                        }
+                        if (column.id === "estado") {
+                          return (
+                            <TableCell key={column.id}>
+                              {mapEstado(
+                                row[
+                                  column.id as keyof TablaData
+                                ] as unknown as number
+                              )}
+                            </TableCell>
+                          );
+                        }
+                        return (
+                          <TableCell key={column.id}>
+                            {row[column.id as keyof TablaData]}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  ))}
+                </>
+              )}
+            </>
+          )}
         </TableBody>
       </TableStyle>
     </TableContainer>

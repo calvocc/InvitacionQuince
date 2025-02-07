@@ -7,7 +7,7 @@ import {
   deleteDoc,
   FirestoreError,
 } from "firebase/firestore/lite";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { db } from "../firebase/firebase";
 
 interface UseGetColection {
@@ -61,7 +61,7 @@ export const useGetColection = (dbCollection: string): UseGetColection => {
   const [error, setError] = useState<FirestoreError | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const getData = useCallback(async () => {
+  const getData = async () => {
     setLoading((prev) => !prev);
     try {
       const querySnapshot = await getDocs(collection(db, dbCollection));
@@ -75,7 +75,7 @@ export const useGetColection = (dbCollection: string): UseGetColection => {
     } finally {
       setLoading((prev) => !prev);
     }
-  }, [dbCollection]);
+  };
 
   return { data, error, loading, getData };
 };

@@ -7,34 +7,27 @@ import Tabla from "../components/tabla-invitado";
 
 import { useGetColection } from "../hooks/useGetColection";
 
-export interface Invitados {
-  number?: number;
+export interface PlaylistData {
   invitado: string;
-  celular: string;
-  cupos: number;
-  estado: string;
-  uid?: string;
-}
-
-export interface MensajesData {
-  invitado: string;
-  mensaje: string;
+  cancion: string;
+  artista: string;
   uid?: string;
 }
 
 function Mensajes() {
-  const { data, loading, error, getData } = useGetColection("Mensajes");
+  const { data, loading, error, getData } = useGetColection("Playlist");
 
   useEffect(() => {
     getData();
   }, []);
 
-  const mapData = useMemo((): MensajesData[] => {
+  const mapData = useMemo((): PlaylistData[] => {
     return data.map((item, index) => {
       return {
         number: index + 1,
         invitado: item.invitado as string,
-        mensaje: item.mensaje as string,
+        cancion: item.cancion as string,
+        artista: item.artista as string,
         uid: item.uid as string,
       };
     });
@@ -43,7 +36,8 @@ function Mensajes() {
   const columns: { id: string; label: string }[] = [
     { id: "number", label: "" },
     { id: "invitado", label: "Invitado" },
-    { id: "mensaje", label: "Mensaje" },
+    { id: "cancion", label: "Cancion" },
+    { id: "artista", label: "Artista" },
   ];
 
   return (
@@ -59,9 +53,9 @@ function Mensajes() {
             size={{ xs: 12, sm: 12, md: 12, lg: 12 }}
             alignContent={"center"}
           >
-            <WLTexts variant="h3">Mensajes</WLTexts>
+            <WLTexts variant="h3">Playlist</WLTexts>
             <WLTexts variant="body1">
-              Estos son los deseos de sus invitados para ustedes.
+              Listado de canciones recomendadas.
             </WLTexts>
           </Grid>
         </Grid>

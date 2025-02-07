@@ -7,6 +7,7 @@ import Login from "./routes/login";
 import Invitados from "./routes/invitados";
 import DashboardLayout from "./routes/dashboard-layout";
 import Mensajes from "./routes/mensajes";
+import Playlist from "./routes/playlist";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
@@ -35,6 +36,7 @@ function App() {
       >
         <Route index element={<Invitados />} />
         <Route path="mensajes" element={<Mensajes />} />
+        <Route path="playlist" element={<Playlist />} />
       </Route>
     </Routes>
   );
