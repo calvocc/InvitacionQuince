@@ -13,9 +13,6 @@ function App() {
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // NOTE: console log para efectos de prueba
-  console.log("User:", !!currentUser);
-
   useEffect(() => {
     if (currentUser) {
       navigate("/dashboard");
@@ -24,7 +21,7 @@ function App() {
 
   return (
     <Routes>
-      <Route index element={<Home />} />
+      <Route path="/:uid" element={<Home />} />
       <Route path="login" element={<Login />} />
       <Route
         path="dashboard"

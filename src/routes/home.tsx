@@ -1,11 +1,17 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect, useContext } from "react";
+import { useParams } from "react-router-dom";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid2";
 import { styled } from "@mui/material/styles";
 
+import { auth, signInAnonymously } from "../firebase/firebase";
+
 import WLButtons from "../components/ui-theme/wl-button";
 import WLTexts from "../components/ui-theme/wl-texts";
+
+import { useGetColectionId } from "../hooks/useGetColection";
+import { AuthContext } from "../context/auth-context";
 
 const ContainerIconBtn = styled("div")`
   position: relative;
@@ -29,11 +35,37 @@ const ContainerIconBtn = styled("div")`
 `;
 
 function Home() {
-  const navigate = useNavigate();
+  const { signOut } = useContext(AuthContext);
+  const { uid } = useParams();
+  const {
+    data,
+    loading = true,
+    error,
+    getDataId,
+  } = useGetColectionId("Invitados");
 
-  const signOut = async () => {
-    navigate("/login");
-  };
+  useEffect(() => {
+    signInAnonymously(auth)
+      .then((user) => {
+        if (user.user.isAnonymous && uid) {
+          getDataId(uid);
+        }
+      })
+      .catch(() => {
+        //! redireccionar a pantalla de error
+      });
+  }, [uid]);
+
+  console.log("loading", loading);
+  console.log("data", data);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error</div>;
+  }
 
   return (
     <Container maxWidth="sm">
@@ -67,8 +99,11 @@ function Home() {
 
       <Grid container spacing={2}>
         <Grid size={12}>
-          <WLTexts variant="h2" weight={800} color="#686754">
-            HOLA MUNDO
+          <WLTexts variant="h5" weight={800} color="#686754">
+            HOLA {data?.dirigida}, {data?.invitado}
+          </WLTexts>
+          <WLTexts variant="body1" weight={400} color="#686754">
+            Ustedes tienen derecho a {data?.cupos} cupos.
           </WLTexts>
         </Grid>
       </Grid>

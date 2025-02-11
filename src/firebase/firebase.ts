@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   NextOrObserver,
   User,
+  signInAnonymously,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore/lite";
 
@@ -27,4 +28,4 @@ export const userStateListener = (callback: NextOrObserver<User>) => {
 
 export const SignOutUser = async () => await signOut(auth);
 
-export { db, auth };
+export { db, auth, signInAnonymously };

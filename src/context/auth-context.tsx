@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }: Props) => {
 
   useEffect(() => {
     const unsubscribe = userStateListener((user) => {
-      if (user) {
+      if (user && !user.isAnonymous) {
         setCurrentUser(user);
       }
     });
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }: Props) => {
   const signOut = () => {
     SignOutUser();
     setCurrentUser(null);
-    navigate("/");
+    navigate("/login");
   };
 
   const value = {

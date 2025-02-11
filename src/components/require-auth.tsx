@@ -9,7 +9,7 @@ function RequireAuth({ children }: { children: JSX.Element }) {
   if (!currentUser) {
     // Redirige al usuario a la página de inicio.
     // ¡Por favor! Cierra el mustache {{}}
-    return <Navigate to="/" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return children;

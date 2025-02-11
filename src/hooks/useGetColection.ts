@@ -3,6 +3,7 @@ import {
   getDocs,
   setDoc,
   doc,
+  getDoc,
   updateDoc,
   deleteDoc,
   FirestoreError,
@@ -15,6 +16,13 @@ interface UseGetColection {
   error: FirestoreError | null;
   loading: boolean;
   getData: () => Promise<void>;
+}
+
+interface UseGetColectionId {
+  data?: { [key: string]: string | number | boolean };
+  error: FirestoreError | null;
+  loading: boolean;
+  getDataId: (id: string) => Promise<void>;
 }
 
 interface UsePostColection {
@@ -78,6 +86,30 @@ export const useGetColection = (dbCollection: string): UseGetColection => {
   };
 
   return { data, error, loading, getData };
+};
+
+export const useGetColectionId = (dbCollection: string): UseGetColectionId => {
+  const [data, setData] = useState<{
+    [key: string]: string | number | boolean;
+  }>();
+  const [error, setError] = useState<FirestoreError | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const getDataId = async (id: string) => {
+    setLoading(true);
+    try {
+      const docSnap = await getDoc(doc(db, dbCollection, id));
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setData({ id: docSnap.id, ...data });
+      }
+    } catch (err) {
+      setError(err as FirestoreError);
+    } finally {
+      setLoading(false);
+    }
+  };
+  return { data, error, loading, getDataId };
 };
 
 export const usePostColection = (dbCollection: string): UsePostColection => {
