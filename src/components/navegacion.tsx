@@ -52,7 +52,7 @@ function Navegacion() {
   };
 
   return (
-    <StyledAppBar position="static">
+    <StyledAppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
