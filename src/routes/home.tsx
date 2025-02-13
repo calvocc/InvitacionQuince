@@ -10,6 +10,7 @@ import { auth, signInAnonymously } from "../firebase/firebase";
 
 import WLButtons from "../components/ui-theme/wl-button";
 import WLTexts from "../components/ui-theme/wl-texts";
+import Items from "../components/items";
 
 import { useGetColectionId } from "../hooks/useGetColection";
 import { AuthContext } from "../context/auth-context";
@@ -27,6 +28,16 @@ import castilloX1 from "../assets/img/castillo.png";
 import castilloX2 from "../assets/img/castillo@2x.png";
 import castilloX3 from "../assets/img/castillo@3x.png";
 import lugar from "../assets/img/lugar.png";
+import hojas from "../assets/img/hojas.png";
+import zapatos from "../assets/img/zapatos.png";
+import musica from "../assets/img/musica.png";
+import regalo from "../assets/img/regalos.png";
+import photos1X1 from "../assets/img/playa1.png";
+import photos1X2 from "../assets/img/playa1@2x.png";
+import photos1X3 from "../assets/img/playa1@3x.png";
+import photos2X1 from "../assets/img/playa2.png";
+import photos2X2 from "../assets/img/playa2@2x.png";
+import photos2X3 from "../assets/img/playa2@3x.png";
 
 const formatDateForGoogleCalendar = (dateString: string) => {
   return (
@@ -121,22 +132,29 @@ const StyleContainerBendicion = styled("div")`
   width: 100%;
 `;
 
-const StyleImgAnillo = styled("img")`
+export const StyleImgAnillo = styled("img")`
   width: 100px;
   height: auto;
 `;
 
-const StyleTextRegular = styled("p")`
+export const StyleTextRegular = styled("p")`
   color: #686754;
   font-size: 1rem;
   font-weight: 400;
   text-align: center;
 `;
 
-const StyleTextRegularBold = styled("p")`
+export const StyleTextRegularBold = styled("p")`
   color: #686754;
   font-size: 1rem;
   font-weight: 800;
+  text-align: center;
+`;
+
+export const StyleTextRegularSemiBold = styled("p")`
+  color: #686754;
+  font-size: 1rem;
+  font-weight: 600;
   text-align: center;
 `;
 
@@ -229,7 +247,7 @@ const StyleContainerTextInvitarlos = styled("div")`
   z-index: 2;
 `;
 
-const StyleTextCursiva = styled("p")`
+export const StyleTextCursiva = styled("p")`
   font-family: "millanovaregular";
   font-size: 2rem;
   line-height: 50px;
@@ -307,6 +325,39 @@ const StyleContainerRecepcion = styled("div")`
   text-align: center;
   padding-bottom: 50px;
   margin-top: -5px;
+`;
+
+const StyleContainerVarios = styled("div")`
+  width: 100%;
+  position: relative;
+  background-image: url(${hojas});
+  background-position: top left;
+  background-size: auto 120px;
+  background-repeat: repeat-x;
+  padding-top: 120px;
+`;
+
+const StyleContainerPhotos = styled("div")`
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 50px;
+`;
+
+const StyleContainerTextPhotos = styled("div")`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 200px;
+  margin-left: -50px;
+  margin-top: -100px;
+  z-index: 2;
+  text-align: center;
+  padding-bottom: 50px;
+  background-color: #fff;
 `;
 
 function Home() {
@@ -539,6 +590,7 @@ function Home() {
         />
         <StyleFondoLugar></StyleFondoLugar>
       </StyleContainerLugar>
+
       <StyleContainerRecepcion>
         <StyleImgAnillo src={lugar} alt="lugar" />
         <StyleTextCursiva
@@ -581,6 +633,104 @@ function Home() {
           }
         />
       </StyleContainerRecepcion>
+
+      <StyleContainerVarios>
+        <Container maxWidth="sm">
+          <Grid container spacing={2}>
+            <Grid
+              size={{ xs: 10, sm: 10, md: 10, lg: 10 }}
+              offset={{ xs: 1, sm: 1, md: 1, lg: 1 }}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginTop: "60px",
+              }}
+            >
+              <Items
+                icono={zapatos}
+                titulo="Dress Code"
+                subtitulo="ELEGANTE"
+                body="Preparence para una boda llena de estilo, dejen el <b>blanco</b> para la novia y el <b>verde<b/> para el novio."
+                btnLabel="Tablero pinterest"
+                onClick={() =>
+                  window.open("https://www.pinterest.com/", "_blank")
+                }
+              />
+            </Grid>
+
+            <Grid
+              size={{ xs: 10, sm: 10, md: 10, lg: 10 }}
+              offset={{ xs: 1, sm: 1, md: 1, lg: 1 }}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginTop: "60px",
+              }}
+            >
+              <Items
+                icono={musica}
+                titulo="Plylist"
+                subtitulo="SUGERENCIA DE CANCIONES"
+                body="La <b>musica</b> ha sido parte importante de nuestro noviasgo y nos gustaria que nos compartieras <b>canciones</b> para tener en cuenta en el PlayList."
+                btnLabel="Agregar cancion"
+                onClick={() => console.log("open modal")}
+              />
+            </Grid>
+
+            <Grid
+              size={{ xs: 10, sm: 10, md: 10, lg: 10 }}
+              offset={{ xs: 1, sm: 1, md: 1, lg: 1 }}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginTop: "60px",
+              }}
+            >
+              <Items
+                icono={regalo}
+                titulo="Regalos"
+                subtitulo="SUGERENCIA DE REGALOS"
+                body="Si deseas obsequiarnos algún presente, agradecemos que fuera en efectivoen la recepcion, recuerda que es <b>lluvia de sobres.</b>"
+              />
+            </Grid>
+          </Grid>
+        </Container>
+      </StyleContainerVarios>
+
+      <StyleContainerPhotos>
+        <img
+          src={photos1X1}
+          srcSet={`
+            ${photos1X1} 480w,
+            ${photos1X2} 768w,
+            ${photos1X3} 1200w
+          `}
+          sizes="(max-width: 480px) 480px,
+             (max-width: 768px) 768px,
+             1200px"
+          alt="Save the date"
+          loading="lazy"
+          style={{ width: "49%", height: "auto" }}
+        />
+        <img
+          src={photos2X1}
+          srcSet={`
+            ${photos2X1} 480w,
+            ${photos2X2} 768w,
+            ${photos2X3} 1200w
+          `}
+          sizes="(max-width: 480px) 480px,
+             (max-width: 768px) 768px,
+             1200px"
+          alt="Save the date"
+          loading="lazy"
+          style={{ width: "49%", height: "auto" }}
+        />
+        <StyleContainerTextPhotos>hola mundo</StyleContainerTextPhotos>
+      </StyleContainerPhotos>
 
       <Container maxWidth="sm" sx={{ marginTop: "40px" }}>
         <Grid container spacing={2}>
