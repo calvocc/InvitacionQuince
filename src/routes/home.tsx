@@ -1,6 +1,7 @@
 import { useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
+import PlaceIcon from "@mui/icons-material/Place";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid2";
 import { styled } from "@mui/material/styles";
@@ -18,6 +19,36 @@ import bannerX2 from "../assets/img/banner@2x.png";
 import bannerX3 from "../assets/img/banner@3x.png";
 import anillos from "../assets/img/anillos.png";
 import bendicion from "../assets/img/IconBendicion.png";
+import honorX1 from "../assets/img/honor.png";
+import honorX2 from "../assets/img/honor@2x.png";
+import honorX3 from "../assets/img/honor@3x.png";
+import copas from "../assets/img/copas.png";
+import castilloX1 from "../assets/img/castillo.png";
+import castilloX2 from "../assets/img/castillo@2x.png";
+import castilloX3 from "../assets/img/castillo@3x.png";
+import lugar from "../assets/img/lugar.png";
+
+const formatDateForGoogleCalendar = (dateString: string) => {
+  return (
+    new Date(dateString).toISOString().replace(/[-:.]/g, "").slice(0, -4) + "Z"
+  );
+};
+
+const event = {
+  title: "Boda de Wilson y Luisa",
+  startDate: formatDateForGoogleCalendar("2025-04-12T16:00:00Z"),
+  endDate: formatDateForGoogleCalendar("2025-04-12T23:59:00Z"),
+  details:
+    "Nos encantaría que nos acompañaras en nuestra boda. guarda la fecha y celebra con nosotros.",
+  location: "Centro de eventos la alameda, Funza Cundinamarca",
+};
+
+const googleCalendarLink = `https://www.google.com/calendar/render?action=TEMPLATE
+&text=${encodeURIComponent(event.title)}
+&dates=${event.startDate}/${event.endDate}
+&details=${encodeURIComponent(event.details)}
+&location=${encodeURIComponent(event.location)}
+&sf=true&output=xml`;
 
 const ContainerIconBtn = styled("div")`
   position: relative;
@@ -95,10 +126,17 @@ const StyleImgAnillo = styled("img")`
   height: auto;
 `;
 
-const StyleTextVersiculo = styled("p")`
+const StyleTextRegular = styled("p")`
   color: #686754;
   font-size: 1rem;
   font-weight: 400;
+  text-align: center;
+`;
+
+const StyleTextRegularBold = styled("p")`
+  color: #686754;
+  font-size: 1rem;
+  font-weight: 800;
   text-align: center;
 `;
 
@@ -167,6 +205,108 @@ const StyleLogoAmpersand = styled("div")`
     margin-left: -47px;
     opacity: 0.3;
   }
+`;
+
+const StyleContainerInvitacion = styled("div")`
+  position: relative;
+  img {
+    width: 100%;
+    height: auto;
+    position: relative;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-bottom: 20px;
+  }
+`;
+
+const StyleContainerTextInvitarlos = styled("div")`
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+`;
+
+const StyleTextCursiva = styled("p")`
+  font-family: "millanovaregular";
+  font-size: 2rem;
+  line-height: 50px;
+  color: #686754;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+`;
+
+const StyleContainerInvitados = styled("div")`
+  width: 100%;
+  position: relative;
+`;
+
+const StyleTextCronometro = styled("div")`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  span {
+    font-size: 40px;
+    line-height: 40px;
+    color: #686754;
+    text-align: center;
+    font-weight: 600;
+    position: relative;
+    margin: 0px 5px;
+    width: 60px;
+    small {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      display: block;
+      font-size: 10px;
+      line-height: 10px;
+      color: #686754;
+    }
+    &.puntos {
+      width: 10px;
+    }
+  }
+`;
+
+const StyleContainerLugar = styled("div")`
+  width: 100%;
+  position: relative;
+  margin-top: 50px;
+  .imgcastillo {
+    height: auto;
+    position: relative;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-bottom: 50px;
+  }
+`;
+
+const StyleFondoLugar = styled("div")`
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  background-color: #878e75;
+  width: 100%;
+  height: 50%;
+  z-index: 1;
+`;
+
+const StyleContainerRecepcion = styled("div")`
+  background-color: #878e75;
+  width: 100%;
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  padding-bottom: 50px;
+  margin-top: -5px;
 `;
 
 function Home() {
@@ -244,13 +384,13 @@ function Home() {
               }}
             >
               <StyleImgAnillo src={anillos} alt="anillos" />
-              <StyleTextVersiculo>
+              <StyleTextRegular>
                 'Nosotros sabemos cuánto nos ama Dios y hemos puesto nuestra
                 confianza en su amor. Dios es amor, y todos los que viven en
                 amor viven en Dios y Dios vive en ellos'
                 <br />
                 <b>1 Juan 4:16</b>{" "}
-              </StyleTextVersiculo>
+              </StyleTextRegular>
               <StyleImgBendicion src={bendicion} alt="bendicion" />
               <StyleTextPadres>
                 con la bendición de dios y nuestros padres
@@ -265,7 +405,184 @@ function Home() {
         </Container>
       </StyleContainerBendicion>
 
-      <Container maxWidth="sm">
+      <StyleContainerInvitacion>
+        <img
+          src={honorX1}
+          srcSet={`
+            ${honorX1} 480w,
+            ${honorX2} 768w,
+            ${honorX3} 1200w
+          `}
+          sizes="(max-width: 480px) 480px,
+             (max-width: 768px) 768px,
+             1200px"
+          alt="Save the date"
+          loading="lazy"
+          style={{ width: "100%", height: "auto" }}
+        />
+        <StyleContainerTextInvitarlos>
+          <Container maxWidth="sm">
+            <Grid container spacing={2}>
+              <Grid
+                size={{ xs: 10, sm: 10, md: 10, lg: 10 }}
+                offset={{ xs: 1, sm: 1, md: 1, lg: 1 }}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <StyleTextRegularBold
+                  sx={{
+                    marginTop: "0px",
+                    marginBottom: "0px",
+                    color: "#242522",
+                  }}
+                >
+                  Tenemos el honor de invitarlos a
+                </StyleTextRegularBold>
+                <StyleTextCursiva
+                  sx={{ marginTop: "10px", marginBottom: "0px" }}
+                >
+                  Nuestra Boda
+                </StyleTextCursiva>
+              </Grid>
+            </Grid>
+          </Container>
+        </StyleContainerTextInvitarlos>
+      </StyleContainerInvitacion>
+
+      <StyleContainerInvitados>
+        <Container maxWidth="sm">
+          <Grid container spacing={2}>
+            <Grid
+              size={{ xs: 10, sm: 10, md: 10, lg: 10 }}
+              offset={{ xs: 1, sm: 1, md: 1, lg: 1 }}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <StyleTextRegular>
+                Este dia es tan especial para nosotros y nos encantaria
+                compartirlo con nuestros seres queridos.
+              </StyleTextRegular>
+              <StyleTextNosotros sx={{ marginBottom: 0 }}>
+                {data?.dirigida}
+              </StyleTextNosotros>
+              <StyleTextRegularBold
+                sx={{
+                  fontSize: "1.2rem",
+                  marginTop: 0,
+                  textTransform: "uppercase",
+                  color: "#242522",
+                }}
+              >
+                {data?.invitado}
+              </StyleTextRegularBold>
+              <StyleImgAnillo src={copas} alt="copas" />
+              <StyleTextNosotros sx={{ marginBottom: 0, marginTop: 1 }}>
+                SABADO
+              </StyleTextNosotros>
+              <StyleTextFecha sx={{ marginBottom: 2 }}>12.04.25</StyleTextFecha>
+              <WLButtons
+                onClick={() => window.open(googleCalendarLink, "_blank")}
+                label="Agendar fecha"
+                icon={
+                  <ContainerIconBtn>
+                    <span>12</span>
+                    <CalendarTodayOutlinedIcon />
+                  </ContainerIconBtn>
+                }
+              />
+              <StyleTextNosotros sx={{ marginBottom: 0, marginTop: 5 }}>
+                Faltan
+              </StyleTextNosotros>
+              <StyleTextCronometro>
+                <span>
+                  35<small>Días</small>
+                </span>
+                <span className="puntos">:</span>
+                <span>
+                  20<small>Horas</small>
+                </span>
+                <span className="puntos">:</span>
+                <span>
+                  55<small>Minutos</small>
+                </span>
+                <span className="puntos">:</span>
+                <span>
+                  10<small>Segundos</small>
+                </span>
+              </StyleTextCronometro>
+            </Grid>
+          </Grid>
+        </Container>
+      </StyleContainerInvitados>
+
+      <StyleContainerLugar>
+        <img
+          className="imgcastillo"
+          src={castilloX1}
+          srcSet={`
+            ${castilloX1} 480w,
+            ${castilloX2} 768w,
+            ${castilloX3} 1200w
+          `}
+          sizes="(max-width: 480px) 480px,
+             (max-width: 768px) 768px,
+             1200px"
+          alt="Save the date"
+          loading="lazy"
+          style={{ width: "100%", height: "auto" }}
+        />
+        <StyleFondoLugar></StyleFondoLugar>
+      </StyleContainerLugar>
+      <StyleContainerRecepcion>
+        <StyleImgAnillo src={lugar} alt="lugar" />
+        <StyleTextCursiva
+          sx={{
+            marginTop: "0px",
+            marginBottom: "0px",
+            color: "#fff",
+            fontSize: "1.2rem",
+          }}
+        >
+          Ceremonia y Recepción
+        </StyleTextCursiva>
+        <StyleTextNosotros
+          sx={{ marginBottom: 0, marginTop: 5, color: "#fff" }}
+        >
+          4:00PM
+        </StyleTextNosotros>
+        <StyleTextRegularBold
+          sx={{
+            fontSize: "1.2rem",
+            marginTop: 0,
+            marginBottom: 0,
+            textTransform: "uppercase",
+            color: "#fff",
+          }}
+        >
+          Centro de eventos la alameda
+        </StyleTextRegularBold>
+        <StyleTextRegular sx={{ marginBottom: 2, marginTop: 0, color: "#fff" }}>
+          calle 25 8-01, Funza, Colombia
+        </StyleTextRegular>
+        <WLButtons
+          onClick={() => window.open(googleCalendarLink, "_blank")}
+          label="Ver en el mapa"
+          colorLight={true}
+          icon={
+            <ContainerIconBtn>
+              <PlaceIcon />
+            </ContainerIconBtn>
+          }
+        />
+      </StyleContainerRecepcion>
+
+      <Container maxWidth="sm" sx={{ marginTop: "40px" }}>
         <Grid container spacing={2}>
           <Grid size={6}>
             <WLButtons
@@ -281,7 +598,7 @@ function Home() {
           </Grid>
           <Grid size={6}>
             <WLButtons
-              onClick={signOut}
+              onClick={() => window.open(googleCalendarLink, "_blank")}
               label="Agendar fecha"
               colorLight={true}
               icon={
