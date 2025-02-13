@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import PlaceIcon from "@mui/icons-material/Place";
@@ -9,11 +9,9 @@ import { styled } from "@mui/material/styles";
 import { auth, signInAnonymously } from "../firebase/firebase";
 
 import WLButtons from "../components/ui-theme/wl-button";
-import WLTexts from "../components/ui-theme/wl-texts";
 import Items from "../components/items";
 
 import { useGetColectionId } from "../hooks/useGetColection";
-import { AuthContext } from "../context/auth-context";
 
 import bannerX1 from "../assets/img/banner.png";
 import bannerX2 from "../assets/img/banner@2x.png";
@@ -38,6 +36,9 @@ import photos1X3 from "../assets/img/playa1@3x.png";
 import photos2X1 from "../assets/img/playa2.png";
 import photos2X2 from "../assets/img/playa2@2x.png";
 import photos2X3 from "../assets/img/playa2@3x.png";
+import despedidaX1 from "../assets/img/despedida.png";
+import despedidaX2 from "../assets/img/despedida@2x.png";
+import despedidaX3 from "../assets/img/despedida@3x.png";
 
 const formatDateForGoogleCalendar = (dateString: string) => {
   return (
@@ -350,18 +351,46 @@ const StyleContainerTextPhotos = styled("div")`
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 100px;
-  height: 200px;
-  margin-left: -50px;
-  margin-top: -100px;
+  width: 140px;
+  height: 300px;
+  margin-left: -70px;
+  margin-top: -150px;
   z-index: 2;
   text-align: center;
   padding-bottom: 50px;
   background-color: #fff;
 `;
 
+const StyleLogoPQ = styled("h1")`
+  position: absolute;
+  font-family: "millanovaregular";
+  font-size: 25px;
+  line-height: 60px;
+  bottom: 150px;
+  left: -56px;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  z-index: 2;
+  width: 250px;
+  height: 60px;
+  margin: 0px;
+  color: #242522;
+`;
+
+const StyleTextHastag = styled("div")`
+  text-align: center;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+`;
+
+const StyleContainerDespedida = styled("div")`
+  width: 100%;
+  position: relative;
+`;
+
 function Home() {
-  const { signOut } = useContext(AuthContext);
   const { uid } = useParams();
   const {
     data,
@@ -729,49 +758,154 @@ function Home() {
           loading="lazy"
           style={{ width: "49%", height: "auto" }}
         />
-        <StyleContainerTextPhotos>hola mundo</StyleContainerTextPhotos>
+        <StyleContainerTextPhotos>
+          <StyleLogoPQ>Wilson y Luisa</StyleLogoPQ>
+          <StyleTextHastag>
+            <StyleTextRegularBold
+              style={{
+                fontSize: "25px",
+                marginTop: "0px",
+                marginBottom: "0px",
+                lineHeight: "25px",
+              }}
+            >
+              12.04.25
+            </StyleTextRegularBold>
+            <StyleTextRegular
+              style={{
+                fontSize: "12px",
+                marginTop: "0px",
+                marginBottom: "10px",
+              }}
+            >
+              #BODAWILSONLUISA
+            </StyleTextRegular>
+          </StyleTextHastag>
+        </StyleContainerTextPhotos>
       </StyleContainerPhotos>
 
-      <Container maxWidth="sm" sx={{ marginTop: "40px" }}>
+      <Container maxWidth="sm" sx={{ marginTop: "10px" }}>
         <Grid container spacing={2}>
-          <Grid size={6}>
-            <WLButtons
-              onClick={signOut}
-              label="Agendar fecha"
-              icon={
-                <ContainerIconBtn>
-                  <span>12</span>
-                  <CalendarTodayOutlinedIcon />
-                </ContainerIconBtn>
-              }
-            />
+          <Grid size={12}>
+            <StyleTextRegular
+              style={{
+                marginTop: "0px",
+                marginBottom: "0px",
+                color: "#686754",
+              }}
+            >
+              Queremos ver las fotos que publiques en tus redes sociales, usa el{" "}
+              <b>#BodaWilson&Luisa</b> para verlas todas en un mismo lugar.
+            </StyleTextRegular>
           </Grid>
-          <Grid size={6}>
-            <WLButtons
-              onClick={() => window.open(googleCalendarLink, "_blank")}
-              label="Agendar fecha"
-              colorLight={true}
-              icon={
-                <ContainerIconBtn>
-                  <span>12</span>
-                  <CalendarTodayOutlinedIcon />
-                </ContainerIconBtn>
-              }
+        </Grid>
+        <Grid container spacing={2}>
+          <Grid
+            size={{ xs: 10, sm: 10, md: 10, lg: 10 }}
+            offset={{ xs: 1, sm: 1, md: 1, lg: 1 }}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              marginTop: "60px",
+            }}
+          >
+            <Items
+              titulo="Cupos"
+              subtitulo="HEMOS RESERVADO"
+              body={`<b>${data?.cupos}</b> Lugares en su honor`}
+              cupos={data?.cupos as number}
             />
           </Grid>
         </Grid>
 
         <Grid container spacing={2}>
-          <Grid size={12}>
-            <WLTexts variant="h5" weight={800} color="#686754">
-              HOLA {data?.dirigida}, {data?.invitado}
-            </WLTexts>
-            <WLTexts variant="body1" weight={400} color="#686754">
-              Ustedes tienen derecho a {data?.cupos} cupos.
-            </WLTexts>
+          <Grid
+            size={{ xs: 10, sm: 10, md: 10, lg: 10 }}
+            offset={{ xs: 1, sm: 1, md: 1, lg: 1 }}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              marginTop: "60px",
+            }}
+          >
+            <Items
+              titulo="Niños"
+              subtitulo="LO SENTIMOS"
+              body="Amamoa a los niños pero hemos reservado sitios solo para adultos. Niños dulces sueños."
+            />
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={2}>
+          <Grid
+            size={{ xs: 10, sm: 10, md: 10, lg: 10 }}
+            offset={{ xs: 1, sm: 1, md: 1, lg: 1 }}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              marginTop: "60px",
+            }}
+          >
+            <Items
+              titulo="Confirmar asistencia"
+              body="Tu presencia es muy importante para nosotros, po favor confirmanos tu asistencia antes del 2 de Abril."
+              btnLabel="Confirmar"
+              btnIcon={
+                <ContainerIconBtn>
+                  <span>12</span>
+                  <CalendarTodayOutlinedIcon />
+                </ContainerIconBtn>
+              }
+            />
           </Grid>
         </Grid>
       </Container>
+
+      <StyleContainerDespedida>
+        <img
+          src={despedidaX1}
+          srcSet={`
+            ${despedidaX1} 480w,
+            ${despedidaX2} 768w,
+            ${despedidaX3} 1200w
+          `}
+          sizes="(max-width: 480px) 480px,
+             (max-width: 768px) 768px,
+             1200px"
+          alt="Save the date"
+          loading="lazy"
+          style={{ width: "100%", height: "auto" }}
+        />
+        <Container maxWidth="sm" sx={{ marginTop: "10px" }}>
+          <Grid container spacing={2}>
+            <Grid size={12}>
+              <StyleTextRegular
+                style={{
+                  marginTop: "0px",
+                  marginBottom: "0px",
+                  color: "#686754",
+                }}
+              >
+                con mucha ilusion queremos vivir este momento rodeados de
+                personas que han sido parte de nuestra historia.
+              </StyleTextRegular>
+              <StyleTextCursiva
+                sx={{
+                  marginTop: "20px",
+                  marginBottom: "40px",
+                  fontSize: "1.5rem",
+                  color: "#242522",
+                }}
+              >
+                Wilson y Luisa
+              </StyleTextCursiva>
+            </Grid>
+          </Grid>
+        </Container>
+      </StyleContainerDespedida>
     </>
   );
 }
