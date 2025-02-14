@@ -1,17 +1,28 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import PlaceIcon from "@mui/icons-material/Place";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid2";
 import { styled } from "@mui/material/styles";
+import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+import { v4 as uuidv4 } from "uuid";
 
 import { auth, signInAnonymously } from "../firebase/firebase";
 
 import WLButtons from "../components/ui-theme/wl-button";
 import Items from "../components/items";
+import Cronometro from "../components/cronometro";
+import DialogPlaylist, { PlayListData } from "../components/dialog-playlist";
+import DialogConfirmacion from "../components/dialog-confirmacion";
+import { InvitadosData } from "../routes/invitados";
 
-import { useGetColectionId } from "../hooks/useGetColection";
+import {
+  useGetColectionId,
+  usePostColection,
+  usePutColection,
+} from "../hooks/useGetColection";
 
 import bannerX1 from "../assets/img/banner.png";
 import bannerX2 from "../assets/img/banner@2x.png";
@@ -263,36 +274,6 @@ const StyleContainerInvitados = styled("div")`
   position: relative;
 `;
 
-const StyleTextCronometro = styled("div")`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  span {
-    font-size: 40px;
-    line-height: 40px;
-    color: #686754;
-    text-align: center;
-    font-weight: 600;
-    position: relative;
-    margin: 0px 5px;
-    width: 60px;
-    small {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      display: block;
-      font-size: 10px;
-      line-height: 10px;
-      color: #686754;
-    }
-    &.puntos {
-      width: 10px;
-    }
-  }
-`;
-
 const StyleContainerLugar = styled("div")`
   width: 100%;
   position: relative;
@@ -399,6 +380,80 @@ function Home() {
     getDataId,
   } = useGetColectionId("Invitados");
 
+  const {
+    loading: putLoading,
+    showSnackbar: {
+      open: showOpenPutSnackbar,
+      message: putMessage,
+      severity: putSeverity,
+    },
+    putData,
+  } = usePutColection("Invitados");
+
+  const [open, setOpen] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [playList, setPlayList] = useState<PlayListData>({
+    cancion: "",
+    artista: "",
+  });
+  const {
+    loading: postLoading,
+    showSnackbar: { open: showOpenSnackbar, message, severity },
+    postData,
+  } = usePostColection("Playlist");
+
+  const handleCloseSnackbar = (
+    _event?: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpenSnackbar(false);
+  };
+
+  const onClosePlayList = (type: string) => {
+    if (type === "backdropClick") return;
+    setOpen(false);
+  };
+
+  const onCloseConfirm = (type: string) => {
+    if (type === "backdropClick") return;
+    setOpenConfirm(false);
+  };
+
+  const addCancion = async (item: PlayListData) => {
+    const uuid = uuidv4();
+
+    await postData({
+      ...item,
+      uid: uuid,
+      invitado: data?.invitado ?? "",
+      fecha: new Date().toISOString(),
+    });
+
+    onClosePlayList("submit");
+    setPlayList({
+      cancion: "",
+      artista: "",
+    });
+  };
+
+  const confirmation = async (c: number) => {
+    if (data) {
+      await putData({ ...data, estado: c });
+      onCloseConfirm("submit");
+    }
+  };
+
+  useEffect(() => {
+    if (showOpenSnackbar || showOpenPutSnackbar) {
+      setOpenSnackbar(true);
+    }
+  }, [showOpenSnackbar, showOpenPutSnackbar]);
+
   useEffect(() => {
     signInAnonymously(auth)
       .then((user) => {
@@ -411,9 +466,6 @@ function Home() {
       });
   }, [uid]);
 
-  console.log("loading", loading);
-  console.log("data", data);
-
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -424,6 +476,16 @@ function Home() {
 
   return (
     <>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert severity={severity || putSeverity}>
+          {message || putMessage}
+        </Alert>
+      </Snackbar>
+
       <StyleContainerSaveDate>
         <img
           src={bannerX1}
@@ -473,7 +535,7 @@ function Home() {
               </StyleTextRegular>
               <StyleImgBendicion src={bendicion} alt="bendicion" />
               <StyleTextPadres>
-                con la bendición de dios y nuestros padres
+                Con la bendición de Dios y nuestros padres
               </StyleTextPadres>
               <StyleTextNosotros>NOSOTROS</StyleTextNosotros>
               <StyleLogoAmpersand>
@@ -519,7 +581,7 @@ function Home() {
                     color: "#242522",
                   }}
                 >
-                  Tenemos el honor de invitarlos a
+                  TENEMOS EL HONOR DE INVITARLOS A
                 </StyleTextRegularBold>
                 <StyleTextCursiva
                   sx={{ marginTop: "10px", marginBottom: "0px" }}
@@ -545,7 +607,7 @@ function Home() {
               }}
             >
               <StyleTextRegular>
-                Este dia es tan especial para nosotros y nos encantaria
+                Este día es tan especial para nosotros y nos encantaría
                 compartirlo con nuestros seres queridos.
               </StyleTextRegular>
               <StyleTextNosotros sx={{ marginBottom: 0 }}>
@@ -579,23 +641,7 @@ function Home() {
               <StyleTextNosotros sx={{ marginBottom: 0, marginTop: 5 }}>
                 Faltan
               </StyleTextNosotros>
-              <StyleTextCronometro>
-                <span>
-                  35<small>Días</small>
-                </span>
-                <span className="puntos">:</span>
-                <span>
-                  20<small>Horas</small>
-                </span>
-                <span className="puntos">:</span>
-                <span>
-                  55<small>Minutos</small>
-                </span>
-                <span className="puntos">:</span>
-                <span>
-                  10<small>Segundos</small>
-                </span>
-              </StyleTextCronometro>
+              <Cronometro />
             </Grid>
           </Grid>
         </Container>
@@ -635,7 +681,7 @@ function Home() {
         <StyleTextNosotros
           sx={{ marginBottom: 0, marginTop: 5, color: "#fff" }}
         >
-          4:00PM
+          5:30PM
         </StyleTextNosotros>
         <StyleTextRegularBold
           sx={{
@@ -652,7 +698,9 @@ function Home() {
           calle 25 8-01, Funza, Colombia
         </StyleTextRegular>
         <WLButtons
-          onClick={() => window.open(googleCalendarLink, "_blank")}
+          onClick={() =>
+            window.open("https://maps.app.goo.gl/DcKwDrUNoCAouUPG9", "_blank")
+          }
           label="Ver en el mapa"
           colorLight={true}
           icon={
@@ -680,10 +728,10 @@ function Home() {
                 icono={zapatos}
                 titulo="Dress Code"
                 subtitulo="ELEGANTE"
-                body="Preparence para una boda llena de estilo, dejen el <b>blanco</b> para la novia y el <b>verde<b/> para el novio."
+                body="¡Prepárense para una boda llena de estilo! Dejen el <b>blanco</b> para la novia y el <b>azul claro</b> para el novio."
                 btnLabel="Tablero pinterest"
                 onClick={() =>
-                  window.open("https://www.pinterest.com/", "_blank")
+                  window.open("https://pin.it/2WO1M4wVE", "_blank")
                 }
               />
             </Grid>
@@ -702,9 +750,45 @@ function Home() {
                 icono={musica}
                 titulo="Plylist"
                 subtitulo="SUGERENCIA DE CANCIONES"
-                body="La <b>musica</b> ha sido parte importante de nuestro noviasgo y nos gustaria que nos compartieras <b>canciones</b> para tener en cuenta en el PlayList."
-                btnLabel="Agregar cancion"
-                onClick={() => console.log("open modal")}
+                body="La <b>música</b> ha sido un ingrediente especial en nuestra historia de amor, y nos haría mucha ilusión que nos compartas <b>canciones</b> que te gusten para incluirlas en nuestro playlist."
+                btnLabel="Agregar canción"
+                onClick={() => setOpen(true)}
+              />
+              <DialogPlaylist
+                open={open}
+                handleClose={(type) => onClosePlayList(type)}
+                onAction={(item) => addCancion(item)}
+                postLoading={postLoading}
+                playList={playList}
+                setPlayList={setPlayList}
+              />
+            </Grid>
+
+            <Grid
+              size={{ xs: 10, sm: 10, md: 10, lg: 10 }}
+              offset={{ xs: 1, sm: 1, md: 1, lg: 1 }}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginTop: "60px",
+              }}
+            >
+              <Items
+                icono={musica}
+                titulo="Buzón de deseos"
+                subtitulo="Nos encantaría leer tus buenos deseos."
+                body="¡Déjanos un mensaje que recordemos por siempre!"
+                btnLabel="Enviar mensaje"
+                onClick={() => setOpen(true)}
+              />
+              <DialogPlaylist
+                open={open}
+                handleClose={(type) => onClosePlayList(type)}
+                onAction={(item) => addCancion(item)}
+                postLoading={postLoading}
+                playList={playList}
+                setPlayList={setPlayList}
               />
             </Grid>
 
@@ -722,7 +806,7 @@ function Home() {
                 icono={regalo}
                 titulo="Regalos"
                 subtitulo="SUGERENCIA DE REGALOS"
-                body="Si deseas obsequiarnos algún presente, agradecemos que fuera en efectivoen la recepcion, recuerda que es <b>lluvia de sobres.</b>"
+                body="Tu presencia es nuestro mejor regalo, pero si deseas obsequiarnos algo especial, hemos preparado un espacio en la recepción para ello. <b>¡Recuerda que es lluvia de sobres!</b>"
               />
             </Grid>
           </Grid>
@@ -778,7 +862,7 @@ function Home() {
                 marginBottom: "10px",
               }}
             >
-              #BODAWILSONLUISA
+              #BodaW&L
             </StyleTextRegular>
           </StyleTextHastag>
         </StyleContainerTextPhotos>
@@ -795,7 +879,7 @@ function Home() {
               }}
             >
               Queremos ver las fotos que publiques en tus redes sociales, usa el{" "}
-              <b>#BodaWilson&Luisa</b> para verlas todas en un mismo lugar.
+              <b>#BodaW&L</b> para verlas todas en un mismo lugar.
             </StyleTextRegular>
           </Grid>
         </Grid>
@@ -813,7 +897,7 @@ function Home() {
             <Items
               titulo="Cupos"
               subtitulo="HEMOS RESERVADO"
-              body={`<b>${data?.cupos}</b> Lugares en su honor`}
+              body={`<b>${data?.cupos}</b> lugares en su honor`}
               cupos={data?.cupos as number}
             />
           </Grid>
@@ -832,8 +916,8 @@ function Home() {
           >
             <Items
               titulo="Niños"
-              subtitulo="LO SENTIMOS"
-              body="Amamoa a los niños pero hemos reservado sitios solo para adultos. Niños dulces sueños."
+              subtitulo="SON BIENVENIDOS"
+              body="Nos encantaría que los niños nos acompañen en esta celebración tan especial. Contamos contigo para su constante supervisión."
             />
           </Grid>
         </Grid>
@@ -851,8 +935,9 @@ function Home() {
           >
             <Items
               titulo="Confirmar asistencia"
-              body="Tu presencia es muy importante para nosotros, po favor confirmanos tu asistencia antes del 2 de Abril."
+              body="Tu presencia es muy importante para nosotros, por favor confírmanos tu asistencia antes del 12 de marzo."
               btnLabel="Confirmar"
+              onClick={() => setOpenConfirm(true)}
               btnIcon={
                 <ContainerIconBtn>
                   <span>12</span>
@@ -860,6 +945,15 @@ function Home() {
                 </ContainerIconBtn>
               }
             />
+            {data && (
+              <DialogConfirmacion
+                open={openConfirm}
+                handleClose={(type) => onCloseConfirm(type)}
+                onAction={(c) => confirmation(c)}
+                postLoading={putLoading}
+                invitado={data as unknown as InvitadosData}
+              />
+            )}
           </Grid>
         </Grid>
       </Container>
@@ -889,7 +983,7 @@ function Home() {
                   color: "#686754",
                 }}
               >
-                con mucha ilusion queremos vivir este momento rodeados de
+                Con mucha ilusión queremos vivir este momento rodeados de
                 personas que han sido parte de nuestra historia.
               </StyleTextRegular>
               <StyleTextCursiva
