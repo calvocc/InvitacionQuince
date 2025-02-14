@@ -17,6 +17,7 @@ import Items from "../components/items";
 import Cronometro from "../components/cronometro";
 import DialogPlaylist, { PlayListData } from "../components/dialog-playlist";
 import DialogConfirmacion from "../components/dialog-confirmacion";
+import DialogMensaje, { MensajeData } from "../components/dialog-mensaje";
 import { InvitadosData } from "../routes/invitados";
 
 import {
@@ -51,6 +52,7 @@ import photos2X3 from "../assets/img/playa2@3x.png";
 import despedidaX1 from "../assets/img/despedida.png";
 import despedidaX2 from "../assets/img/despedida@2x.png";
 import despedidaX3 from "../assets/img/despedida@3x.png";
+import mensajeicon from "../assets/img/mensaje.png";
 
 const formatDateForGoogleCalendar = (dateString: string) => {
   return (
@@ -313,11 +315,25 @@ const StyleContainerRecepcion = styled("div")`
 const StyleContainerVarios = styled("div")`
   width: 100%;
   position: relative;
+  padding-top: 120px;
+`;
+
+const StyleContainerParalax = styled("div")`
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+  height: 120px;
+`;
+
+const StyleBacgroundParalax = styled("div")`
+  width: 100%;
+  height: 120px;
   background-image: url(${hojas});
   background-position: top left;
   background-size: auto 120px;
   background-repeat: repeat-x;
-  padding-top: 120px;
 `;
 
 const StyleContainerPhotos = styled("div")`
@@ -401,17 +417,32 @@ function Home() {
   } = usePutColection("Invitados");
 
   const [open, setOpen] = useState(false);
+  const [openMensaje, setOpenMensaje] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [playList, setPlayList] = useState<PlayListData>({
     cancion: "",
     artista: "",
   });
+  const [mensaje, setMensaje] = useState<MensajeData>({
+    mensaje: "",
+  });
+
   const {
     loading: postLoading,
     showSnackbar: { open: showOpenSnackbar, message, severity },
     postData,
   } = usePostColection("Playlist");
+
+  const {
+    loading: mensajeLoading,
+    showSnackbar: {
+      open: showOpenMensajeSnackbar,
+      message: messageMensaje,
+      severity: severityMensaje,
+    },
+    postData: postMensaje,
+  } = usePostColection("Mensajes");
 
   const handleCloseSnackbar = (
     _event?: React.SyntheticEvent | Event,
@@ -427,6 +458,11 @@ function Home() {
   const onClosePlayList = (type: string) => {
     if (type === "backdropClick") return;
     setOpen(false);
+  };
+
+  const onCloseMensaje = (type: string) => {
+    if (type === "backdropClick") return;
+    setOpenMensaje(false);
   };
 
   const onCloseConfirm = (type: string) => {
@@ -451,6 +487,22 @@ function Home() {
     });
   };
 
+  const addMensaje = async (item: MensajeData) => {
+    const uuid = uuidv4();
+
+    await postMensaje({
+      ...item,
+      uid: uuid,
+      invitado: data?.invitado ?? "",
+      fecha: new Date().toISOString(),
+    });
+
+    onClosePlayList("submit");
+    setMensaje({
+      mensaje: "",
+    });
+  };
+
   const confirmation = async (c: number) => {
     if (data) {
       await putData({ ...data, estado: c });
@@ -459,10 +511,10 @@ function Home() {
   };
 
   useEffect(() => {
-    if (showOpenSnackbar || showOpenPutSnackbar) {
+    if (showOpenSnackbar || showOpenPutSnackbar || showOpenMensajeSnackbar) {
       setOpenSnackbar(true);
     }
-  }, [showOpenSnackbar, showOpenPutSnackbar]);
+  }, [showOpenSnackbar, showOpenPutSnackbar, showOpenMensajeSnackbar]);
 
   useEffect(() => {
     signInAnonymously(auth)
@@ -499,8 +551,8 @@ function Home() {
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
       >
-        <Alert severity={severity || putSeverity}>
-          {message || putMessage}
+        <Alert severity={severity || putSeverity || severityMensaje}>
+          {message || putMessage || messageMensaje}
         </Alert>
       </Snackbar>
       <StyleContainerSaveDate>
@@ -733,6 +785,11 @@ function Home() {
       </StyleContainerRecepcion>
 
       <StyleContainerVarios>
+        <StyleContainerParalax>
+          <Parallax translateY={["-50px", "0px"]}>
+            <StyleBacgroundParalax></StyleBacgroundParalax>
+          </Parallax>
+        </StyleContainerParalax>
         <Container maxWidth="sm">
           <Grid container spacing={2}>
             <Grid
@@ -796,20 +853,20 @@ function Home() {
               }}
             >
               <Items
-                icono={musica}
+                icono={mensajeicon}
                 titulo="Buzón de deseos"
                 subtitulo="Nos encantaría leer tus buenos deseos."
                 body="¡Déjanos un mensaje que recordemos por siempre!"
                 btnLabel="Enviar mensaje"
-                onClick={() => setOpen(true)}
+                onClick={() => setOpenMensaje(true)}
               />
-              <DialogPlaylist
-                open={open}
-                handleClose={(type) => onClosePlayList(type)}
-                onAction={(item) => addCancion(item)}
-                postLoading={postLoading}
-                playList={playList}
-                setPlayList={setPlayList}
+              <DialogMensaje
+                open={openMensaje}
+                handleClose={(type) => onCloseMensaje(type)}
+                onAction={(item) => addMensaje(item)}
+                postLoading={mensajeLoading}
+                mensaje={mensaje}
+                setMensaje={setMensaje}
               />
             </Grid>
 
@@ -957,7 +1014,7 @@ function Home() {
             <Items
               titulo="Confirmar asistencia"
               body="Tu presencia es muy importante para nosotros, por favor confírmanos tu asistencia antes del 12 de marzo."
-              btnLabel="Confirmar"
+              btnLabel={data?.estado === 1 ? "No asistire" : "Asistire"}
               onClick={() => setOpenConfirm(true)}
               btnIcon={
                 <ContainerIconBtn>

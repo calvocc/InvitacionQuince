@@ -48,7 +48,7 @@ function Mensajes() {
 
   return (
     <>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ marginTop: "80px" }}>
         <Grid
           container
           spacing={2}

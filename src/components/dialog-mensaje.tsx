@@ -1,4 +1,10 @@
-import { Dialog, DialogContent, DialogActions, Box } from "@mui/material";
+import {
+  Dialog,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Box,
+} from "@mui/material";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContentText from "@mui/material/DialogContentText";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -6,7 +12,18 @@ import { styled } from "@mui/material/styles";
 
 import WLButtons from "../components/ui-theme/wl-button";
 
-import { InvitadosData } from "../routes/invitados";
+export interface MensajeData {
+  mensaje: string;
+}
+
+interface DialogMensajeProps {
+  open: boolean;
+  handleClose: (reason: string) => void;
+  onAction: (mensaje: MensajeData) => void;
+  postLoading: boolean;
+  mensaje: MensajeData;
+  setMensaje: React.Dispatch<React.SetStateAction<MensajeData>>;
+}
 
 const StyleDialogTitle = styled(DialogTitle)`
   font-family: "Poppins", serif;
@@ -31,21 +48,14 @@ const StyleLinearProgress = styled(LinearProgress)`
   }
 `;
 
-interface DialogInvitadoProps {
-  open: boolean;
-  handleClose: (reason: string) => void;
-  onAction: (c: number) => void;
-  postLoading: boolean;
-  invitado: InvitadosData;
-}
-
-const DialogConfirmacion = ({
+const DialogMensaje = ({
   open,
   handleClose,
   onAction,
   postLoading,
-  invitado,
-}: DialogInvitadoProps) => {
+  mensaje,
+  setMensaje,
+}: DialogMensajeProps) => {
   return (
     <Dialog open={open} onClose={() => handleClose("backdropClick")}>
       {postLoading && (
@@ -53,29 +63,31 @@ const DialogConfirmacion = ({
           <StyleLinearProgress />
         </Box>
       )}
-      <StyleDialogTitle>
-        {invitado.estado === 1 ? "Cancelar asistencia" : "Confirmar asistencia"}
-      </StyleDialogTitle>
+      <StyleDialogTitle>Escribir deseo</StyleDialogTitle>
       <DialogContent>
         <StyleDialogContentText>
-          {invitado.estado === 1 ? (
-            <>
-              Nos da tristeza que no puedas asistir a nuestro evento, pero
-              entendemos que a veces las cosas no salen como uno espera. Por
-              favor, confirma tu asistencia si cambias de opinión.
-            </>
-          ) : (
-            <>
-              Estas a un click de participar del inicio de esta nueva etapa en
-              nuestras vidas, por lo que te pedimos nos ayudes a mantener todo
-              organizado y ordenado respetando el numero de cupos que se te
-              asignaron {invitado.cupos} cupos.
-            </>
-          )}
-          <br />
-          <br />
-          GRACIAS...
+          Dejanos un mensaje contandonos tus buenos deseos.
         </StyleDialogContentText>
+
+        <TextField
+          autoFocus
+          required
+          margin="dense"
+          id="mensaje"
+          name="mensaje"
+          label="Mensaje"
+          type="text"
+          fullWidth
+          multiline
+          variant="standard"
+          value={mensaje.mensaje}
+          onChange={(event) => {
+            setMensaje((prev) => ({
+              ...prev,
+              mensaje: event.target.value,
+            }));
+          }}
+        />
       </DialogContent>
       <DialogActions>
         <WLButtons
@@ -84,13 +96,13 @@ const DialogConfirmacion = ({
           disabled={postLoading}
         />
         <WLButtons
-          label={invitado.estado === 1 ? "No asistiré" : "Asistiré"}
+          label={"Enviar"}
           disabled={postLoading}
-          onClick={() => onAction(invitado.estado === 1 ? 0 : 1)}
+          onClick={() => onAction(mensaje)}
         />
       </DialogActions>
     </Dialog>
   );
 };
 
-export default DialogConfirmacion;
+export default DialogMensaje;

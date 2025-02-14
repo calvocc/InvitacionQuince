@@ -16,7 +16,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import EditIcon from "@mui/icons-material/Edit";
 import Alert from "@mui/material/Alert";
-import { useLocation } from "react-router-dom";
 
 import WLButtonGroup from "./ui-theme/wl-button-group";
 import WLTexts from "./ui-theme/wl-texts";
