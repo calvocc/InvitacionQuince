@@ -158,7 +158,7 @@ function Invitados() {
 
   return (
     <>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ marginTop: "80px" }}>
         <Snackbar
           open={openSnackbar}
           autoHideDuration={6000}

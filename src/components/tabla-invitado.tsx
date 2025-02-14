@@ -16,6 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import EditIcon from "@mui/icons-material/Edit";
 import Alert from "@mui/material/Alert";
+import { useLocation } from "react-router-dom";
 
 import WLButtonGroup from "./ui-theme/wl-button-group";
 import WLTexts from "./ui-theme/wl-texts";
@@ -63,8 +64,12 @@ const Tabla: React.FC<TablaProps> = ({
   loadingData,
   errorData,
 }) => {
+  const baseUrl = window.location.origin;
+
   const waMessage = (user: TablaData) =>
-    `🎉✨ ¡Hola ${user.invitado}! ✨🎉 Tenemos el placer de invitarte a un día muy especial para nosotros: ¡nuestra boda! 💍❤️ Hemos preparado una invitación digital con todos los detalles. Haz clic aquí para verla 👉 http://localhost:5173/${user.uid}`;
+    encodeURIComponent(
+      `🎉✨ ¡Hola ${user.invitado}! ✨🎉\n\nTenemos el placer de invitarte a un día muy especial para nosotros: ¡nuestra boda! 💍❤️\n\nHemos preparado una invitación digital con todos los detalles.\n\nCon cariño,\n❤️ Wilson & Luisa.\n\nHaz clic aquí para verla 👉 ${baseUrl}/${user.uid}`
+    );
 
   const mapEstado = (estado: number) => {
     switch (estado) {
@@ -72,7 +77,7 @@ const Tabla: React.FC<TablaProps> = ({
         return "Pendiente";
       case 1:
         return "Confirmado";
-      case 2:
+      case -1:
         return "Cancelado";
       default:
         return "No definido";
