@@ -7,6 +7,7 @@ import Grid from "@mui/material/Grid2";
 import { styled } from "@mui/material/styles";
 import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import { Parallax } from "react-scroll-parallax";
 import { v4 as uuidv4 } from "uuid";
 
 import { auth, signInAnonymously } from "../firebase/firebase";
@@ -371,6 +372,15 @@ const StyleContainerDespedida = styled("div")`
   position: relative;
 `;
 
+const StyleContainerLoading = styled("div")`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+`;
+
 function Home() {
   const { uid } = useParams();
   const {
@@ -467,11 +477,19 @@ function Home() {
   }, [uid]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <StyleContainerLoading>
+        <div>Loading...</div>
+      </StyleContainerLoading>
+    );
   }
 
   if (error) {
-    return <div>Error</div>;
+    return (
+      <StyleContainerLoading>
+        <div>Error cargando datos...</div>
+      </StyleContainerLoading>
+    );
   }
 
   return (
@@ -485,7 +503,6 @@ function Home() {
           {message || putMessage}
         </Alert>
       </Snackbar>
-
       <StyleContainerSaveDate>
         <img
           src={bannerX1}
@@ -502,49 +519,53 @@ function Home() {
           style={{ width: "100%", height: "auto" }}
         />
 
-        <StyleContainerSaveDateText>
-          <StyleLogo>Wilson y Luisa</StyleLogo>
-          <StyleTextSaveDate>
-            <StyleTextSubFecha>SAVE THE DATE</StyleTextSubFecha>
-            <StyleTextFecha>12.04.25</StyleTextFecha>
-            <StyleTextSubFecha>NUESTRA BODA</StyleTextSubFecha>
-          </StyleTextSaveDate>
-        </StyleContainerSaveDateText>
+        <Parallax speed={-5}>
+          <StyleContainerSaveDateText>
+            <StyleLogo>Wilson y Luisa</StyleLogo>
+            <StyleTextSaveDate>
+              <StyleTextSubFecha>SAVE THE DATE</StyleTextSubFecha>
+              <StyleTextFecha>12.04.25</StyleTextFecha>
+              <StyleTextSubFecha>NUESTRA BODA</StyleTextSubFecha>
+            </StyleTextSaveDate>
+          </StyleContainerSaveDateText>
+        </Parallax>
       </StyleContainerSaveDate>
 
       <StyleContainerBendicion>
-        <Container maxWidth="sm">
-          <Grid container spacing={2}>
-            <Grid
-              size={{ xs: 10, sm: 10, md: 10, lg: 10 }}
-              offset={{ xs: 1, sm: 1, md: 1, lg: 1 }}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                marginTop: "40px",
-              }}
-            >
-              <StyleImgAnillo src={anillos} alt="anillos" />
-              <StyleTextRegular>
-                'Nosotros sabemos cuánto nos ama Dios y hemos puesto nuestra
-                confianza en su amor. Dios es amor, y todos los que viven en
-                amor viven en Dios y Dios vive en ellos'
-                <br />
-                <b>1 Juan 4:16</b>{" "}
-              </StyleTextRegular>
-              <StyleImgBendicion src={bendicion} alt="bendicion" />
-              <StyleTextPadres>
-                Con la bendición de Dios y nuestros padres
-              </StyleTextPadres>
-              <StyleTextNosotros>NOSOTROS</StyleTextNosotros>
-              <StyleLogoAmpersand>
-                <h2>Wilson y Luisa</h2>
-                <span>&</span>
-              </StyleLogoAmpersand>
+        <Parallax opacity={[0.5, 1]} speed={-1}>
+          <Container maxWidth="sm">
+            <Grid container spacing={2}>
+              <Grid
+                size={{ xs: 10, sm: 10, md: 10, lg: 10 }}
+                offset={{ xs: 1, sm: 1, md: 1, lg: 1 }}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  marginTop: "40px",
+                }}
+              >
+                <StyleImgAnillo src={anillos} alt="anillos" />
+                <StyleTextRegular>
+                  'Nosotros sabemos cuánto nos ama Dios y hemos puesto nuestra
+                  confianza en su amor. Dios es amor, y todos los que viven en
+                  amor viven en Dios y Dios vive en ellos'
+                  <br />
+                  <b>1 Juan 4:16</b>{" "}
+                </StyleTextRegular>
+                <StyleImgBendicion src={bendicion} alt="bendicion" />
+                <StyleTextPadres>
+                  Con la bendición de Dios y nuestros padres
+                </StyleTextPadres>
+                <StyleTextNosotros>NOSOTROS</StyleTextNosotros>
+                <StyleLogoAmpersand>
+                  <h2>Wilson y Luisa</h2>
+                  <span>&</span>
+                </StyleLogoAmpersand>
+              </Grid>
             </Grid>
-          </Grid>
-        </Container>
+          </Container>
+        </Parallax>
       </StyleContainerBendicion>
 
       <StyleContainerInvitacion>
