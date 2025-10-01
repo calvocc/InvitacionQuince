@@ -35,7 +35,7 @@ const StyleTextCronometro = styled("div")`
 `;
 
 const Cronometro: React.FC = () => {
-  const time = new Date("2025-04-12T16:00:00");
+  const time = new Date("2025-11-02T20:00:00");
   const { seconds, minutes, hours, days } = useTimer({
     expiryTimestamp: time,
     onExpire: () => console.warn("onExpire called"),

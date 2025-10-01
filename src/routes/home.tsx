@@ -573,11 +573,11 @@ function Home() {
 
         <Parallax speed={-5}>
           <StyleContainerSaveDateText>
-            <StyleLogo>Wilson y Luisa</StyleLogo>
+            <StyleLogo>MISHEL CERMEÑO GOMEZ</StyleLogo>
             <StyleTextSaveDate>
               <StyleTextSubFecha>SAVE THE DATE</StyleTextSubFecha>
-              <StyleTextFecha>12.04.25</StyleTextFecha>
-              <StyleTextSubFecha>NUESTRA BODA</StyleTextSubFecha>
+              <StyleTextFecha>02.11.2025</StyleTextFecha>
+              <StyleTextSubFecha>MIS QUINCE</StyleTextSubFecha>
             </StyleTextSaveDate>
           </StyleContainerSaveDateText>
         </Parallax>
@@ -599,11 +599,10 @@ function Home() {
               >
                 <StyleImgAnillo src={anillos} alt="anillos" />
                 <StyleTextRegular>
-                  'Nosotros sabemos cuánto nos ama Dios y hemos puesto nuestra
-                  confianza en su amor. Dios es amor, y todos los que viven en
-                  amor viven en Dios y Dios vive en ellos'
+                  'Hoy la quinceañera soy yo y quiero que me acompañes a
+                  celebrar este día lleno de sorpresas y diversión.'
                   <br />
-                  <b>1 Juan 4:16</b>{" "}
+                  <b>MISHEL CERMEÑO GOMEZ</b>{" "}
                 </StyleTextRegular>
                 <StyleImgBendicion src={bendicion} alt="bendicion" />
                 <StyleTextPadres>
@@ -659,7 +658,7 @@ function Home() {
                 <StyleTextCursiva
                   sx={{ marginTop: "10px", marginBottom: "0px" }}
                 >
-                  Nuestra Boda
+                  Mis Quince Años
                 </StyleTextCursiva>
               </Grid>
             </Grid>
@@ -698,9 +697,9 @@ function Home() {
               </StyleTextRegularBold>
               <StyleImgAnillo src={copas} alt="copas" />
               <StyleTextNosotros sx={{ marginBottom: 0, marginTop: 1 }}>
-                SABADO
+                DOMINGO
               </StyleTextNosotros>
-              <StyleTextFecha sx={{ marginBottom: 2 }}>12.04.25</StyleTextFecha>
+              <StyleTextFecha sx={{ marginBottom: 2 }}>02.11.25</StyleTextFecha>
               <WLButtons
                 onClick={() => window.open(googleCalendarLink, "_blank")}
                 label="Agendar fecha"
@@ -749,12 +748,12 @@ function Home() {
             fontSize: "1.2rem",
           }}
         >
-          Ceremonia y Recepción
+          Recepción
         </StyleTextCursiva>
         <StyleTextNosotros
           sx={{ marginBottom: 0, marginTop: 5, color: "#fff" }}
         >
-          5:30PM
+          8:00PM
         </StyleTextNosotros>
         <StyleTextRegularBold
           sx={{
@@ -765,14 +764,14 @@ function Home() {
             color: "#fff",
           }}
         >
-          Centro de eventos la alameda
+          SALON DE EVENTOS CAYENA REAL
         </StyleTextRegularBold>
         <StyleTextRegular sx={{ marginBottom: 2, marginTop: 0, color: "#fff" }}>
-          calle 25 8-01, Funza, Colombia
+          Cra.7H #44-39, Barranquilla, Colombia
         </StyleTextRegular>
         <WLButtons
           onClick={() =>
-            window.open("https://maps.app.goo.gl/DcKwDrUNoCAouUPG9", "_blank")
+            window.open("https://maps.app.goo.gl/g2pCohsBhBVHVGY38", "_blank")
           }
           label="Ver en el mapa"
           colorLight={true}
@@ -804,9 +803,9 @@ function Home() {
             >
               <Items
                 icono={zapatos}
-                titulo="Dress Code"
-                subtitulo="ELEGANTE"
-                body="¡Prepárense para una boda llena de estilo! Dejen el <b>blanco</b> para la novia y el <b>azul claro</b> para el novio."
+                titulo="Código de Vestimenta"
+                subtitulo="ROPA FORMAL"
+                body="Prepárate para una noche de glamour y elegancia ¡¡ guarda el  <b>lila</b> para la quinceañera."
                 btnLabel="Tablero pinterest"
                 onClick={() =>
                   window.open("https://pin.it/2WO1M4wVE", "_blank")
@@ -826,9 +825,9 @@ function Home() {
             >
               <Items
                 icono={musica}
-                titulo="Plylist"
+                titulo="Lista de reproducción"
                 subtitulo="SUGERENCIA DE CANCIONES"
-                body="La <b>música</b> ha sido un ingrediente especial en nuestra historia de amor, y nos haría mucha ilusión que nos compartas <b>canciones</b> que te gusten para incluirlas en nuestro playlist."
+                body="En mi fiesta la <b>música</b> es importante y si deseas puedes compartir alguna <b>canción</b> para incluir en mi playlist"
                 btnLabel="Agregar canción"
                 onClick={() => setOpen(true)}
               />
@@ -856,7 +855,7 @@ function Home() {
                 icono={mensajeicon}
                 titulo="Buzón de deseos"
                 subtitulo="Nos encantaría leer tus buenos deseos."
-                body="¡Déjanos un mensaje que recordemos por siempre!"
+                body="!déjame saber que deseas para mi en esta fecha y recordarlo por siempre!"
                 btnLabel="Enviar mensaje"
                 onClick={() => setOpenMensaje(true)}
               />
@@ -884,7 +883,7 @@ function Home() {
                 icono={regalo}
                 titulo="Regalos"
                 subtitulo="SUGERENCIA DE REGALOS"
-                body="Tu presencia es nuestro mejor regalo, pero si deseas obsequiarnos algo especial, hemos preparado un espacio en la recepción para ello. <b>¡Recuerda que es lluvia de sobres!</b>"
+                body="tu presencia es un gran detalle para mi, pero si deseas puedes obsequiarme un <b>detalle físico o lluvia de sobre.</b>"
               />
             </Grid>
           </Grid>
@@ -931,7 +930,7 @@ function Home() {
                 lineHeight: "25px",
               }}
             >
-              12.04.25
+              2.11.25
             </StyleTextRegularBold>
             <StyleTextRegular
               style={{
@@ -940,7 +939,7 @@ function Home() {
                 marginBottom: "10px",
               }}
             >
-              #BodaW&L
+              #QuinceDeMishel
             </StyleTextRegular>
           </StyleTextHastag>
         </StyleContainerTextPhotos>
@@ -1013,7 +1012,7 @@ function Home() {
           >
             <Items
               titulo="Confirmar asistencia"
-              body="Tu presencia es muy importante para nosotros, por favor confírmanos tu asistencia antes del 12 de marzo."
+              body="Tu presencia es muy importante para nosotros, por favor confírmanos tu asistencia antes del 29 de octubre."
               btnLabel={data?.estado === 1 ? "No asistire" : "Asistire"}
               onClick={() => setOpenConfirm(true)}
               btnIcon={
@@ -1061,8 +1060,9 @@ function Home() {
                   color: "#686754",
                 }}
               >
-                Con mucha ilusión queremos vivir este momento rodeados de
-                personas que han sido parte de nuestra historia.
+                Con mucha alegría espero este dia y vivir una fecha memorable
+                junto con mi familia y las personas que han sido parte de mi
+                historia.
               </StyleTextRegular>
               <StyleTextCursiva
                 sx={{
@@ -1072,7 +1072,7 @@ function Home() {
                   color: "#242522",
                 }}
               >
-                Wilson y Luisa
+                Mishel Cermeño Gomez
               </StyleTextCursiva>
             </Grid>
           </Grid>
