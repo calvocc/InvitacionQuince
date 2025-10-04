@@ -67,7 +67,7 @@ const Tabla: React.FC<TablaProps> = ({
 
   const waMessage = (user: TablaData) =>
     encodeURIComponent(
-      `🎉✨ ¡Hola ${user.invitado}! ✨🎉\n\nTenemos el placer de invitarte a un día muy especial para nosotros: ¡nuestra boda! 💍❤️\n\nHemos preparado una invitación digital con todos los detalles.\n\nCon cariño,\n❤️ Wilson & Luisa.\n\nHaz clic aquí para verla 👉 ${baseUrl}/${user.uid}`
+      `🎉✨ ¡Hola ${user.invitado}! ✨🎉 \n\nTenemos el placer de invitarte a la fiesta de quince años de Mishel.\n\nSerá un día muy especial para nosotros y nos encantaría que hicieras parte de este momento tan importante. 💖\n\nHemos preparado una invitación digital con todos los detalles:\n\n👉 Haz clic aquí para verla 👉 ${baseUrl}/${user.uid}\n\nCon cariño,\n\n❤️ Sindy Gómez`
     );
 
   const mapEstado = (estado: number) => {

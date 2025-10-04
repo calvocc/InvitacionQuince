@@ -219,14 +219,6 @@ const StyleImgBendicion = styled("img")`
   height: auto;
   margin-top: 20px;
 `;
-
-const StyleTextPadres = styled("p")`
-  text-align: center;
-  font-size: 1rem;
-  font-weight: 400;
-  text-transform: uppercase;
-  color: #a251fb;
-`;
 const StyleTextNosotros = styled("span")`
   text-align: center;
   font-size: 1rem;
@@ -294,14 +286,6 @@ const StyleContainerInvitacion = styled("div")`
     right: 0;
     margin-bottom: 20px;
   }
-`;
-
-const StyleContainerTextInvitarlos = styled("div")`
-  position: absolute;
-  bottom: 0px;
-  left: 0;
-  width: 100%;
-  z-index: 2;
 `;
 
 export const StyleTextCursiva = styled("p")`
