@@ -76,6 +76,10 @@ const googleCalendarLink = `https://www.google.com/calendar/render?action=TEMPLA
 &location=${encodeURIComponent(event.location)}
 &sf=true&output=xml`;
 
+// const Color1 = "#8C00FE";
+// const Color2 = "#A665BC";
+// const Color3 = "#D398F9";
+
 const ContainerIconBtn = styled("div")`
   position: relative;
   width: 17px;
@@ -111,7 +115,7 @@ const StyleContainerSaveDateText = styled("div")`
 const StyleLogo = styled("h1")`
   position: absolute;
   font-family: "millanovaregular";
-  font-size: 50px;
+  font-size: 45px;
   line-height: 95px;
   top: -350px;
   left: -30px;
@@ -122,6 +126,7 @@ const StyleLogo = styled("h1")`
   height: 95px;
   margin: 0px;
   color: #242522;
+  text-shadow: 1px 1px 1px #fff;
 `;
 
 const StyleTextSaveDate = styled("div")`
@@ -573,7 +578,7 @@ function Home() {
 
         <Parallax speed={-5}>
           <StyleContainerSaveDateText>
-            <StyleLogo>MISHEL CERMEÑO GOMEZ</StyleLogo>
+            <StyleLogo>Mishel Cermeño</StyleLogo>
             <StyleTextSaveDate>
               <StyleTextSubFecha>SAVE THE DATE</StyleTextSubFecha>
               <StyleTextFecha>02.11.2025</StyleTextFecha>
