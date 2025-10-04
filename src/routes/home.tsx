@@ -77,8 +77,9 @@ const googleCalendarLink = `https://www.google.com/calendar/render?action=TEMPLA
 &sf=true&output=xml`;
 
 // const Color1 = "#8C00FE";
-// const Color2 = "#A665BC";
-// const Color3 = "#D398F9";
+// const Color2 = "#A251FB";
+// const Color3 = "#a16dff";
+// const Color4 = "#d398f9";
 
 const ContainerIconBtn = styled("div")`
   position: relative;
@@ -107,26 +108,61 @@ const StyleContainerSaveDate = styled("div")`
 
 const StyleContainerSaveDateText = styled("div")`
   position: absolute;
-  bottom: 40px;
+  bottom: 20px;
   left: 0;
   width: 100%;
 `;
-
-const StyleLogo = styled("h1")`
+const StyleContainerLogogo = styled("div")`
+  position: relative;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 80px;
+`;
+const StyleLogoTitulo = styled("h1")`
+  font-family: "Mr Bedfort", cursive;
+  font-size: 4.5rem;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  color: #a251fb;
+  width: 100%;
+  height: 70px;
+`;
+const StyleLogoSunTitulo = styled("h2")`
+  font-size: 1rem;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  color: #a16dff;
   position: absolute;
-  font-family: "millanovaregular";
-  font-size: 45px;
-  line-height: 95px;
-  top: -350px;
-  left: -30px;
-  transform: rotate(-90deg);
-  transform-origin: center;
-  z-index: 2;
-  width: 500px;
-  height: 95px;
-  margin: 0px;
-  color: #242522;
-  text-shadow: 1px 1px 1px #fff;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  text-align: center;
+`;
+
+const StyleContainerLogoPq = styled("div")`
+  position: relative;
+  text-align: center;
+  width: 100%;
+`;
+const StyleLogoTituloPq = styled("h1")`
+  font-family: "Mr Bedfort", cursive;
+  font-size: 2.5rem;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  color: #a251fb;
+  width: 100%;
+  height: 40px;
+`;
+const StyleLogoSunTituloPq = styled("h2")`
+  font-size: 0.6rem;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  color: #a16dff;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  text-align: center;
 `;
 
 const StyleTextSaveDate = styled("div")`
@@ -138,14 +174,14 @@ const StyleTextFecha = styled("h3")`
   margin-top: 0px;
   margin-bottom: 0px;
   line-height: 2.6rem;
-  color: #686754;
+  color: #a251fb;
 `;
 const StyleTextSubFecha = styled("p")`
   font-size: 1rem;
   font-weight: 400;
   margin-top: 0px;
   margin-bottom: 0px;
-  color: #9aa098;
+  color: #a16dff;
 `;
 
 const StyleContainerBendicion = styled("div")`
@@ -158,21 +194,21 @@ export const StyleImgAnillo = styled("img")`
 `;
 
 export const StyleTextRegular = styled("p")`
-  color: #686754;
+  color: #a16dff;
   font-size: 1rem;
   font-weight: 400;
   text-align: center;
 `;
 
 export const StyleTextRegularBold = styled("p")`
-  color: #686754;
+  color: #a251fb;
   font-size: 1rem;
   font-weight: 800;
   text-align: center;
 `;
 
 export const StyleTextRegularSemiBold = styled("p")`
-  color: #686754;
+  color: #a251fb;
   font-size: 1rem;
   font-weight: 600;
   text-align: center;
@@ -189,14 +225,14 @@ const StyleTextPadres = styled("p")`
   font-size: 1rem;
   font-weight: 400;
   text-transform: uppercase;
-  color: #686754;
+  color: #a251fb;
 `;
 const StyleTextNosotros = styled("span")`
   text-align: center;
   font-size: 1rem;
   font-weight: 400;
   text-transform: uppercase;
-  color: #686754;
+  color: #a251fb;
   position: relative;
   ::before {
     content: "";
@@ -220,15 +256,16 @@ const StyleTextNosotros = styled("span")`
 
 const StyleLogoAmpersand = styled("div")`
   position: relative;
-  margin-top: 20px;
+  margin-top: 0px;
   h2 {
-    font-family: "millanovaregular";
-    font-size: 2rem;
+    font-family: "Mr Bedfort", cursive;
+    font-size: 3rem;
     line-height: 50px;
-    color: #686754;
+    color: #a251fb;
     text-align: center;
     position: relative;
     z-index: 2;
+    margin-top: 0px;
   }
   span {
     position: absolute;
@@ -268,10 +305,10 @@ const StyleContainerTextInvitarlos = styled("div")`
 `;
 
 export const StyleTextCursiva = styled("p")`
-  font-family: "millanovaregular";
-  font-size: 2rem;
+  font-family: "Mr Bedfort", cursive;
+  font-size: 3rem;
   line-height: 50px;
-  color: #686754;
+  color: #a251fb;
   text-align: center;
   position: relative;
   z-index: 2;
@@ -301,14 +338,14 @@ const StyleFondoLugar = styled("div")`
   position: absolute;
   bottom: 0px;
   left: 0;
-  background-color: #878e75;
+  background-color: #a251fb;
   width: 100%;
   height: 50%;
   z-index: 1;
 `;
 
 const StyleContainerRecepcion = styled("div")`
-  background-color: #878e75;
+  background-color: #a251fb;
   width: 100%;
   position: relative;
   z-index: 3;
@@ -355,29 +392,12 @@ const StyleContainerTextPhotos = styled("div")`
   top: 50%;
   left: 50%;
   width: 140px;
-  height: 300px;
+  height: 150px;
   margin-left: -70px;
-  margin-top: -150px;
+  margin-top: -75px;
   z-index: 2;
   text-align: center;
-  padding-bottom: 50px;
   background-color: #fff;
-`;
-
-const StyleLogoPQ = styled("h1")`
-  position: absolute;
-  font-family: "millanovaregular";
-  font-size: 25px;
-  line-height: 60px;
-  bottom: 150px;
-  left: -56px;
-  transform: rotate(-90deg);
-  transform-origin: center;
-  z-index: 2;
-  width: 250px;
-  height: 60px;
-  margin: 0px;
-  color: #242522;
 `;
 
 const StyleTextHastag = styled("div")`
@@ -578,9 +598,12 @@ function Home() {
 
         <Parallax speed={-5}>
           <StyleContainerSaveDateText>
-            <StyleLogo>Mishel Cermeño</StyleLogo>
+            <StyleContainerLogogo>
+              <StyleLogoTitulo>Mishel</StyleLogoTitulo>
+              <StyleLogoSunTitulo>CERMEÑO GOMEZ</StyleLogoSunTitulo>
+            </StyleContainerLogogo>
             <StyleTextSaveDate>
-              <StyleTextSubFecha>SAVE THE DATE</StyleTextSubFecha>
+              <StyleTextSubFecha>GUARDA LA FECHA</StyleTextSubFecha>
               <StyleTextFecha>02.11.2025</StyleTextFecha>
               <StyleTextSubFecha>MIS QUINCE</StyleTextSubFecha>
             </StyleTextSaveDate>
@@ -610,13 +633,16 @@ function Home() {
                   <b>MISHEL CERMEÑO GOMEZ</b>{" "}
                 </StyleTextRegular>
                 <StyleImgBendicion src={bendicion} alt="bendicion" />
-                <StyleTextPadres>
-                  Con la bendición de Dios y nuestros padres
-                </StyleTextPadres>
-                <StyleTextNosotros>NOSOTROS</StyleTextNosotros>
+
+                <StyleTextNosotros
+                  sx={{
+                    marginTop: 5,
+                  }}
+                >
+                  MI MAMÁ
+                </StyleTextNosotros>
                 <StyleLogoAmpersand>
-                  <h2>Wilson y Luisa</h2>
-                  <span>&</span>
+                  <h2>Sindy Gomez</h2>
                 </StyleLogoAmpersand>
               </Grid>
             </Grid>
@@ -639,36 +665,6 @@ function Home() {
           loading="lazy"
           style={{ width: "100%", height: "auto" }}
         />
-        <StyleContainerTextInvitarlos>
-          <Container maxWidth="sm">
-            <Grid container spacing={2}>
-              <Grid
-                size={{ xs: 10, sm: 10, md: 10, lg: 10 }}
-                offset={{ xs: 1, sm: 1, md: 1, lg: 1 }}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              >
-                <StyleTextRegularBold
-                  sx={{
-                    marginTop: "0px",
-                    marginBottom: "0px",
-                    color: "#242522",
-                  }}
-                >
-                  TENEMOS EL HONOR DE INVITARLOS A
-                </StyleTextRegularBold>
-                <StyleTextCursiva
-                  sx={{ marginTop: "10px", marginBottom: "0px" }}
-                >
-                  Mis Quince Años
-                </StyleTextCursiva>
-              </Grid>
-            </Grid>
-          </Container>
-        </StyleContainerTextInvitarlos>
       </StyleContainerInvitacion>
 
       <StyleContainerInvitados>
@@ -683,9 +679,27 @@ function Home() {
                 alignItems: "center",
               }}
             >
+              <StyleTextRegularBold
+                sx={{
+                  marginTop: "0px",
+                  marginBottom: "0px",
+                  color: "#242522",
+                }}
+              >
+                Tiene el honor de invitarte a
+              </StyleTextRegularBold>
+              <StyleTextCursiva
+                sx={{
+                  marginTop: "10px",
+                  marginBottom: "0px",
+                  fontSize: "2rem",
+                }}
+              >
+                Mis Quince Años
+              </StyleTextCursiva>
               <StyleTextRegular>
-                Este día es tan especial para nosotros y nos encantaría
-                compartirlo con nuestros seres queridos.
+                Este es un día muy especial y nos encantaría compartirlo
+                contigo.
               </StyleTextRegular>
               <StyleTextNosotros sx={{ marginBottom: 0 }}>
                 {data?.dirigida}
@@ -695,7 +709,7 @@ function Home() {
                   fontSize: "1.2rem",
                   marginTop: 0,
                   textTransform: "uppercase",
-                  color: "#242522",
+                  color: "#A251FB",
                 }}
               >
                 {data?.invitado}
@@ -925,7 +939,10 @@ function Home() {
           style={{ width: "49%", height: "auto" }}
         />
         <StyleContainerTextPhotos>
-          <StyleLogoPQ>Wilson y Luisa</StyleLogoPQ>
+          <StyleContainerLogoPq>
+            <StyleLogoTituloPq>Mishel</StyleLogoTituloPq>
+            <StyleLogoSunTituloPq>CERMEÑO GOMEZ</StyleLogoSunTituloPq>
+          </StyleContainerLogoPq>
           <StyleTextHastag>
             <StyleTextRegularBold
               style={{
@@ -941,7 +958,7 @@ function Home() {
               style={{
                 fontSize: "12px",
                 marginTop: "0px",
-                marginBottom: "10px",
+                marginBottom: "5px",
               }}
             >
               #QuinceDeMishel
@@ -957,7 +974,7 @@ function Home() {
               style={{
                 marginTop: "0px",
                 marginBottom: "0px",
-                color: "#686754",
+                color: "#a251fb",
               }}
             >
               Queremos ver las fotos que publiques en tus redes sociales, usa el{" "}
@@ -1062,23 +1079,17 @@ function Home() {
                 style={{
                   marginTop: "0px",
                   marginBottom: "0px",
-                  color: "#686754",
+                  color: "#a251fb",
                 }}
               >
                 Con mucha alegría espero este dia y vivir una fecha memorable
                 junto con mi familia y las personas que han sido parte de mi
                 historia.
               </StyleTextRegular>
-              <StyleTextCursiva
-                sx={{
-                  marginTop: "20px",
-                  marginBottom: "40px",
-                  fontSize: "1.5rem",
-                  color: "#242522",
-                }}
-              >
-                Mishel Cermeño Gomez
-              </StyleTextCursiva>
+              <StyleContainerLogoPq sx={{ marginTop: 5 }}>
+                <StyleLogoTituloPq>Mishel</StyleLogoTituloPq>
+                <StyleLogoSunTituloPq>CERMEÑO GOMEZ</StyleLogoSunTituloPq>
+              </StyleContainerLogoPq>
             </Grid>
           </Grid>
         </Container>

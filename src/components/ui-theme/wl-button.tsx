@@ -4,16 +4,16 @@ import Button from "@mui/material/Button";
 const WLButton = styled(Button)<{ colorLight?: boolean }>`
   font-family: "Poppins", serif;
   font-weight: 600;
-  color: ${({ colorLight }) => (colorLight ? "#686754" : "#fff")};
-  background-color: ${({ colorLight }) => (colorLight ? "#fff" : "#686754")};
-  border: 1px solid ${({ colorLight }) => (colorLight ? "#fff" : "#686754")};
+  color: ${({ colorLight }) => (colorLight ? "#a251fb" : "#fff")};
+  background-color: ${({ colorLight }) => (colorLight ? "#fff" : "#a251fb")};
+  border: 1px solid ${({ colorLight }) => (colorLight ? "#fff" : "#a251fb")};
   padding: 2px 16px;
   :hover {
-    color: ${({ colorLight }) => (colorLight ? "#686754" : "#fff")};
+    color: ${({ colorLight }) => (colorLight ? "#a251fb" : "#fff")};
     background-color: ${({ colorLight }) =>
-      colorLight ? "#9aa098" : "#9aa098"};
+      colorLight ? "#D398F9" : "#D398F9"};
     border: 1px solid
-      ${({ colorLight }) => (colorLight ? "#9aa098" : "#9aa098")};
+      ${({ colorLight }) => (colorLight ? "#D398F9" : "#D398F9")};
   }
 `;
 

@@ -12,7 +12,7 @@ const StyleTextCronometro = styled("div")`
   span {
     font-size: 40px;
     line-height: 40px;
-    color: #686754;
+    color: #a251fb;
     text-align: center;
     font-weight: 600;
     position: relative;
@@ -26,7 +26,7 @@ const StyleTextCronometro = styled("div")`
       display: block;
       font-size: 10px;
       line-height: 10px;
-      color: #686754;
+      color: #a251fb;
     }
     &.puntos {
       width: 10px;

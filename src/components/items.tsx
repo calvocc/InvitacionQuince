@@ -59,7 +59,9 @@ const Items: React.FC<ItemsProps> = ({
           sx={{
             marginTop: "0px",
             marginBottom: "0px",
-            fontSize: "1.5rem",
+            fontSize: "2rem",
+            color: "#242522",
+            lineHeight: "25px",
           }}
         >
           {titulo}
