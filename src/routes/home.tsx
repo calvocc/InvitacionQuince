@@ -61,12 +61,12 @@ const formatDateForGoogleCalendar = (dateString: string) => {
 };
 
 const event = {
-  title: "Boda de Wilson y Luisa",
+  title: "Quinceañera Mishel Cermeño",
   startDate: formatDateForGoogleCalendar("2025-04-12T16:00:00Z"),
   endDate: formatDateForGoogleCalendar("2025-04-12T23:59:00Z"),
   details:
-    "Nos encantaría que nos acompañaras en nuestra boda. guarda la fecha y celebra con nosotros.",
-  location: "Centro de eventos la alameda, Funza Cundinamarca",
+    "Nos encantaría que nos acompañaras en mis Quince. guarda la fecha y celebra con nosotros.",
+  location: "Salon de eventos Cayena Real, Barranquilla, Colombia",
 };
 
 const googleCalendarLink = `https://www.google.com/calendar/render?action=TEMPLATE
@@ -623,10 +623,10 @@ function Home() {
                     marginTop: 5,
                   }}
                 >
-                  MI MAMÁ
+                  MIS PADRES
                 </StyleTextNosotros>
                 <StyleLogoAmpersand>
-                  <h2>Sindy Gomez</h2>
+                  <h2>Sindy & Jhon</h2>
                 </StyleLogoAmpersand>
               </Grid>
             </Grid>
@@ -809,10 +809,6 @@ function Home() {
                 titulo="Código de Vestimenta"
                 subtitulo="ROPA FORMAL"
                 body="Prepárate para una noche de glamour y elegancia ¡¡ guarda el  <b>lila</b> para la quinceañera."
-                btnLabel="Tablero pinterest"
-                onClick={() =>
-                  window.open("https://pin.it/2WO1M4wVE", "_blank")
-                }
               />
             </Grid>
 
@@ -962,7 +958,7 @@ function Home() {
               }}
             >
               Queremos ver las fotos que publiques en tus redes sociales, usa el{" "}
-              <b>#BodaW&L</b> para verlas todas en un mismo lugar.
+              <b>#QuinceDeMishel</b> para verlas todas en un mismo lugar.
             </StyleTextRegular>
           </Grid>
         </Grid>
@@ -1018,7 +1014,7 @@ function Home() {
           >
             <Items
               titulo="Confirmar asistencia"
-              body="Tu presencia es muy importante para nosotros, por favor confírmanos tu asistencia antes del 29 de octubre."
+              body="Tu presencia es muy importante para nosotros, por favor confírmanos tu asistencia antes del 25 de octubre."
               btnLabel={data?.estado === 1 ? "No asistire" : "Asistire"}
               onClick={() => setOpenConfirm(true)}
               btnIcon={

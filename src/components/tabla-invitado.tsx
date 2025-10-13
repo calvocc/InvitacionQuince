@@ -66,9 +66,7 @@ const Tabla: React.FC<TablaProps> = ({
   const baseUrl = window.location.origin;
 
   const waMessage = (user: TablaData) =>
-    encodeURIComponent(
-      `🎉✨ ¡Hola ${user.invitado}! ✨🎉 \n\nTenemos el placer de invitarte a la fiesta de quince años de Mishel.\n\nSerá un día muy especial para nosotros y nos encantaría que hicieras parte de este momento tan importante. 💖\n\nHemos preparado una invitación digital con todos los detalles:\n\n👉 Haz clic aquí para verla 👉 ${baseUrl}/${user.uid}\n\nCon cariño,\n\n❤️ Sindy Gómez`
-    );
+    `https://api.whatsapp.com/send?text=🎉✨%20¡Hola%20${user.invitado}!%20✨🎉%20%0A%0ATenemos%20el%20placer%20de%20invitarte%20a%20la%20fiesta%20de%20quince%20años%20de%20Mishel.%20%0A%0ASerá%20un%20día%20muy%20especial%20para%20nosotros%20y%20nos%20encantaría%20que%20hicieras%20parte%20de%20este%20momento%20tan%20importante.%20💖%0A%0AHemos%20preparado%20una%20invitación%20digital%20con%20todos%20los%20detalles:%0A%0A👉%20Haz%20clic%20aquí%20para%20verla%20👉%20${baseUrl}/${user.uid}%2F1234%0A%0ACon%20cariño%2C%0A%0A❤️%20Sindy%20y%20Jhon`;
 
   const mapEstado = (estado: number) => {
     switch (estado) {
@@ -141,12 +139,7 @@ const Tabla: React.FC<TablaProps> = ({
                                       size="small"
                                       onClick={() => {
                                         if ("celular" in row) {
-                                          window.open(
-                                            `https://wa.me/${
-                                              row.celular
-                                            }?text=${waMessage(row)}`,
-                                            "_blank"
-                                          );
+                                          window.open(waMessage(row), "_blank");
                                         }
                                       }}
                                     >

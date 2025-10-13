@@ -71,7 +71,7 @@ function Navegacion() {
                 textDecoration: "none",
               }}
             >
-              Wilson & Luisa
+              Mishel
             </Typography>
           </Box>
 
@@ -125,7 +125,7 @@ function Navegacion() {
               textDecoration: "none",
             }}
           >
-            Wilson & Luisa
+            Mishel
           </Typography>
 
           <Box

@@ -82,8 +82,8 @@ function Login() {
               Invitacion W&L
             </WLTexts>
             <WLTexts variant="body1">
-              Ingresa tu correo electrónico y contraseña para administrar tu
-              boda.
+              Ingresa tu correo electrónico y contraseña para administrar tus
+              quince.
             </WLTexts>
           </Grid>
         </Grid>

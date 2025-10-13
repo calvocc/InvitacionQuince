@@ -67,7 +67,7 @@ const DialogPlaylist = ({
       <StyleDialogTitle>Recomendar canción</StyleDialogTitle>
       <DialogContent>
         <StyleDialogContentText>
-          Cuentanos que cancion quieres que haga parte del PlayList de la boda.
+          Cuentanos que cancion quieres que haga parte del PlayList mis Quince.
         </StyleDialogContentText>
 
         <TextField
